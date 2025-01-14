@@ -4,8 +4,7 @@
 
 > Notes and reminders for myself.
 
-> [Markdown Syntax Link for Reference]
->  If you are not familiar with Markdown then you should review the [documentation](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) before continuing.
+>  Link to [markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) help.
 
 ## 🚀 Specification Deliverable
 
