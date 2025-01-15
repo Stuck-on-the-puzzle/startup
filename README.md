@@ -18,16 +18,23 @@ Do you love reading books, but have a hard time keeping track of all the books y
 
 ### Design
 
-![Design image](placeholder.png)
+These diagrams show the four different pages that will make up BookClub. They are the login screen, home screen, read book screen, and not read book screen.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+![Design image](LoginPage.png)
 
-```mermaid
-sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
-```
+> This screen is where you put your login or where you can signup.
+
+![Design image](HomeScreen.png)
+
+> This screen is where you can see the books you've read, the books on your wishlist, and your friends.
+
+![Design image](ReadBook.png)
+
+> This screen is where you can look at a book you have already read. You can customize your review or reccomend it to a friend.
+
+![Design image](NotReadBook.png)
+
+> This screen is where you can look at a book you have not read. You can add it to your list of books that you have already read, add it to your wishlist, and see which of your friends have read the book. 
 
 ### Key features
 
