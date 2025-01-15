@@ -31,9 +31,13 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Secure login
+- Keep track of books you have read
+- Ability to upload an internet photo of a book
+- Ability to comment and rate books you have read
+- Keep a list of books you want to read
+- Have a friends list
+- Ability to reccomend a book to a friend
 
 ### Technologies
 
