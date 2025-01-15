@@ -4,14 +4,6 @@ This website application will allow avid readers to keep track of the books they
 
 ## 🚀 Specification Deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
-
-- [check] Proper use of Markdown
-- [check] A concise and compelling elevator pitch
-- [check] Description of key features
-- [check] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
-
 ### Elevator pitch
 
 Do you love reading books, but have a hard time keeping track of all the books you have read? BookClub lets you log books, rate them, give your opinion on the book, and create a wishlist of books that you want to read. BookClub also lets you connect with your friends to see their opinions and what they have been reading.
