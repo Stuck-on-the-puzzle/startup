@@ -8,8 +8,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [check] Proper use of Markdown
 - [check] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
+- [check] Description of key features
+- [check] Description of how you will use each technology
 - [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
@@ -43,12 +43,12 @@ sequenceDiagram
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - I will use correct HTML structure. There will be five main HTML pages. One for login, one for a home screen (this will show books read, wishlist of books, and friends), one for a read book screen (this will show the book title, an image if added, the review, and an option to share it with a friend), one for books not read (this will allow you to add a book to your wishlist), and one for an add book screen (this will be where you can add a book to the database).
+- **CSS** - I will use CSS to create an aesthetically pleasing style. I will also use it to create website that is easy to navigate and feels natural
+- **React** - I will use React to allow the user to login, add books, search for a friend, and comment on books.
+- **Service** - I will use Service for backend service with end points for the login and add photos with a URL
+- **DB/Login** - I will use DB/Login to store user info, book database, wishlist, read book list, and friend list.
+- **WebSocket** - Book comments, book additions, and friend additions occur in real time and can be seen immediately after it is finished.
 
 ## 🚀 AWS deliverable
 
