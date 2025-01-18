@@ -1,13 +1,9 @@
 # CS 260 Notes
 
-### Brief Descriptions
-> HTML structures the content
-> CSS styles and designs appearance
-> JavaScript add interactivity and dynamic functionality
-
-### Startup Info
-Key Pair Name: BauerShield
-IP address: 23.20.217.119
+Brief Description of HTML, CSS, and JavaScript:
+> HTML structures the content\
+> CSS styles and designs appearance\
+> JavaScript adds interactivity and dynamic functionality\
 
 [My startup - Simon](https://simon.cs260.click)
 
@@ -19,8 +15,8 @@ IP address: 23.20.217.119
 
 ## AWS
 
-My IP address is: 54.81.96.130
-Launching my AMI I initially put it on a private subnet. Even though it had a public IP address and the security group was right, I wasn't able to connect to it.
+Key Pair Name: BauerShield\
+IP address: 23.20.217.119\
 
 ## Caddy
 
