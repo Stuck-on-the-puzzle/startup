@@ -1,5 +1,14 @@
 # CS 260 Notes
 
+### Brief Descriptions
+> HTML structures the content
+> CSS styles and designs appearance
+> JavaScript add interactivity and dynamic functionality
+
+### Startup Info
+Key Pair Name: BauerShield
+IP address: 23.20.217.119
+
 [My startup - Simon](https://simon.cs260.click)
 
 ## Helpful links
