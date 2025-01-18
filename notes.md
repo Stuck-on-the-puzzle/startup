@@ -3,7 +3,7 @@
 Brief Description of HTML, CSS, and JavaScript:
 > HTML structures the content\
 > CSS styles and designs appearance\
-> JavaScript adds interactivity and dynamic functionality\
+> JavaScript adds interactivity and dynamic functionality
 
 [My startup - Simon](https://simon.cs260.click)
 
@@ -16,7 +16,7 @@ Brief Description of HTML, CSS, and JavaScript:
 ## AWS
 
 Key Pair Name: BauerShield\
-IP address: 23.20.217.119\
+IP address: 23.20.217.119
 
 ## Caddy
 
