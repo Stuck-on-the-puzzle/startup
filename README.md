@@ -51,9 +51,12 @@ I am going to use the required technologies in the following ways.
 
 ## 🚀 AWS deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+For this deliverable, I created a website with an elastic IP address and purchased a domain name. The link to the website is below. I also secured my website by configuring Caddy to request a certificate from Let's Encrypt
 
-- [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
+> IP address is 23.20.217.119\
+> Domain Name: bookclub260.click
+
+- `[x]` **Server deployed and accessible with custom domain name** - [BookClub](https://bookclub260.click).
 
 ## 🚀 HTML deliverable
 
