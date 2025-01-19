@@ -16,11 +16,14 @@ Brief Description of HTML, CSS, and JavaScript:
 ## AWS
 
 Key Pair Name: BauerShield\
-IP address: 23.20.217.119
+IP address: 23.20.217.119\
+Domain Name: bookclub260.click\
+Link: [BookClub](https://bookclub260.click)\
+It is surprisingly easy to get a domain name and connect it to your IP address!
 
 ## Caddy
 
-No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
+No problem. Worked just like it said in the instructions.
 
 ## HTML
 
