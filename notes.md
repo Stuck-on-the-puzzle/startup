@@ -5,8 +5,6 @@ Brief Description of HTML, CSS, and JavaScript:
 > CSS styles and designs appearance\
 > JavaScript adds interactivity and dynamic functionality
 
-[My startup - Simon](https://simon.cs260.click)
-
 ## Helpful links
 
 - [Course instruction](https://github.com/webprogramming260)
