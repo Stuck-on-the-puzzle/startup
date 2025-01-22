@@ -1,7 +1,7 @@
 # CS 260 Notes
 
 Brief Description of HTML, CSS, and JavaScript:
-> HTML structures the content\
+> HTML provides structure and content\
 > CSS styles and designs appearance\
 > JavaScript adds interactivity and dynamic functionality
 
