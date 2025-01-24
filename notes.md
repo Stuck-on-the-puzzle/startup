@@ -25,7 +25,7 @@ No problem. Worked just like it said in the instructions.
 
 ## HTML
 
-This was easy. I was careful to use the correct structural elements such as header, footer, main, nav, and form. The links between the three views work great using the `a` element.
+I made sure I used the right structural elements for my website. I used the example from the github notes to help me keep my structure more organized too.
 
 The part I didn't like was the duplication of the header and footer code. This is messy, but it will get cleaned up when I get to React.
 
