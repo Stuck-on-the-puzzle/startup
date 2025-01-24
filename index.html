@@ -3,9 +3,9 @@
   <body>
     <!-- Header  -->
     <header>
-      <h1>Book Club!</h1>
+      <h1>Book Club!📚</h1>
 
-      <!-- Navigation elements -->
+      <!-- Navigation  -->
       <nav>
         Navigation:
         <ul>
@@ -20,10 +20,21 @@
 
     <!-- Main -->
     <main>
+        <label for="username">Username: </label>
+        <input type="text" id="username" name="username" placeholder="Enter Username Here" required pattern="^[^\s]*$"/>
+        <br>
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" placeholder="Enter Password Here" required pattern="^[^\s]*$"/>
+        <br>
+        <button type="submit">Login</button>
+        <!-- I might need to change the type of the create button-->
+        <button type="submit">Create</button>
     </main>
 
     <!-- Footer -->
     <footer>
+        <hr />
+        <h1>Some Text Here</h1>
     </footer>
   </body>
 </html>
