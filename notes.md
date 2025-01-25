@@ -25,9 +25,7 @@ No problem. Worked just like it said in the instructions.
 
 ## HTML
 
-I made sure I used the right structural elements for my website. I used the example from the github notes to help me keep my structure more organized too.
-
-The part I didn't like was the duplication of the header and footer code. This is messy, but it will get cleaned up when I get to React.
+I made sure I used the right structural elements for my website. I used the example from the github notes to help me keep my structure more organized too. Being Organized in your HTML code is super important so you don't get lost in your tags.
 
 ## CSS
 
