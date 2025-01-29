@@ -69,7 +69,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
 - `[x]` **Images** - I put images in my application. I also have some images as placeholders.
 - `[x]` **Login placeholder** - I have a placeholder for the Login.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
+- `[x]` **DB data placeholder** - I have placeholders for where the database will be used (User Info, Friends, List of Books Read with their review, Wishlist)
 - [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
 
 ## 🚀 CSS deliverable
