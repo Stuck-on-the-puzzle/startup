@@ -47,7 +47,7 @@ I am going to use the required technologies in the following ways.
 - **React** - I will use React to allow the user to login, add books, search for a friend, and comment on books.
 - **Service** - I will use Service for backend service with end points for the login and add books/photos using Open Library API
 - **DB/Login** - I will use DB/Login to store user info, book database, wishlist, read book list, and friend list.
-- **WebSocket** - Book comments, book additions, and friend additions occur in real time and can be seen immediately after it is finished.
+- **WebSocket** - Book reviews, book additions, and friend additions occur in real time and can be seen immediately after it is finished.
 
 ## 🚀 AWS deliverable
 
@@ -68,9 +68,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - `[x]` **Text** - I provided textual content where necessary and applicable
 - [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
 - `[x]` **Images** - I put images in my application. I also have some images as placeholders.
-- `[x]` **Login placeholder** - I have a placeholder for the Login.
+- `[x]` **Login placeholder** - I have a placeholder for the Login. It is one the index.html (login) page
 - `[x]` **DB data placeholder** - I have placeholders for where the database will be used (User Info, Friends, List of Books Read with their review, Wishlist)
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- `[x]` **WebSocket placeholder** - I have placeholders for where websocket will be used (book reviews, book additions, and friend additions)
 
 ## 🚀 CSS deliverable
 
