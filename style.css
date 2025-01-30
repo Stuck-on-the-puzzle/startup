@@ -1,0 +1,27 @@
+/* This is currently trying to get a better feel for css
+   and testing what I might want to do for my design */
+
+   * {
+    font-family: sans-serif;
+    color: black;
+   }
+   body {
+    background-color: #f5a442;
+   }
+
+   header {
+    background-color: #b54800;
+   }
+
+   .fly-in {
+  animation: fly-from-left 1s ease-out;
+   }
+
+@keyframes fly-from-left {
+  0% {
+    transform: translateX(-200%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
