@@ -1,6 +1,3 @@
-/* This is currently trying to get a better feel for css
-   and testing what I might want to do for my design */
-
    * {
     font-family: sans-serif;
     color: black;
@@ -11,6 +8,14 @@
 
    header {
     background-color: #b54800;
+   }
+
+   footer {
+    background-color: #b54800;
+   }
+
+   main {
+    background-color: #f5a442;
    }
 
    .fly-in {
