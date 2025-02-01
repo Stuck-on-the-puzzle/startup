@@ -1,20 +1,41 @@
-   * {
-    font-family: sans-serif;
-    color: black;
-   }
    body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    height: 100%;
     background-color: #f5a442;
    }
+  
+  header {
+    flex: 0 50px;
+    font-size: 20px;
+    /*background: hsl(223, 57%, 38%);*/
+    background-color: #a25f00;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+   }
 
-   header {
-    background-color: #b54800;
+   header ul {
+    list-style-type: none;
+    display: flex;
+   }
+
+   header li {
+    margin-right: 20px;
    }
 
    footer {
+    flex: 0 30px;
     background-color: #b54800;
    }
 
    main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     background-color: #f5a442;
    }
 
