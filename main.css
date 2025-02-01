@@ -25,28 +25,69 @@
     margin-right: 20px;
    }
 
+   .makelinkbig {
+    color: #eff3f6;
+    font-size: 18px;
+    transition: all 0.3s ease;
+   }
+  
+   .makelinkbig:hover {
+     animation: grow;
+     color: #d3d7db;
+     font-size: 23px;
+   }
+
    footer {
-    flex: 0 30px;
+    flex: 0 20px;
     background-color: hsl(223, 97%, 28%);
     color: hsla(224, 100%, 97%, 0.852);
+    padding-top: 15px;
+    padding-bottom: 15px;
    }
 
    main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     justify-content: space-around;
     background-color: hsl(223, 46%, 51%);
     color: white;
+   }
+
+   body.index-page main {
     /*Get Books to be above and below login */
+    align-items: center;
     background-image: url("BookShelf.png"), url("BookShelf.png");
     background-repeat: repeat-x; /* Repeat the image horizontally */
     background-position: top center, bottom center; /* Position images at top and bottom */
-    background-size: 33%;
+    background-size: 30%;
     padding-top: 200px;
     padding-bottom: 200px;
    }
+
+   .btn-primary {
+    background-color: hsl(223, 100%, 28%) !important;
+    color: white;
+    border: none !important;
+  }
+
+  .btn-secondary {
+   background-color: #6c7884 !important;
+   color: white;
+   border: none !important;
+  }
+
+  .btn-primary:hover {
+   background-color: hsl(223, 100%, 18%) !important;
+   border: none;
+  }
+
+  .btn-secondary:hover {
+   background-color: #40474e !important;
+   border: none;
+  }
+
 
    @media screen and (max-width: 600px) {
     main {

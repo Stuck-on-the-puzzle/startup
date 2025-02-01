@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="home.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
+      rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" 
+      crossorigin="anonymous">
     <title>BookClub</title>
     <link rel="icon" href="books.png" />
   </head>
@@ -17,17 +20,15 @@
 
       <!-- Navigation  -->
       <nav>
-        Navigation:
         <ul>
-          <li><a href="index.html">Login</a></li>
-          <li><a href="home.html">Home</a></li>
-          <!-- These links are temporarily here. Just here for ease of navigating while grading. They will only 
+          <li><a href="index.html" class="makelinkbig">Login</a></li>
+          <li><a href="home.html" class="makelinkbig">Home</a></li>
+          <!-- These links below are temporarily here. Just here for ease of navigating while grading. They will only 
            be accessed by trying to add a book that has been read or add a book to the wishlist -->
-          <li><a href="readbook.html">BooksRead</a></li>
-          <li><a href="notreadbook.html">BooksNotRead</a></li>
+          <li><a href="readbook.html" class="makelinkbig">BooksRead</a></li>
+          <li><a href="notreadbook.html" class="makelinkbig">BooksNotRead</a></li>
         </ul>
       </nav>
-
       <hr />
     </header>
 
@@ -36,59 +37,65 @@
       <!-- Books in this section come from a 3rd party API that provides a library of books. The pictures are placeholders of said books. -->
         <section>
             <h1>Welcome to BookClub!📚</h1>
+            <br>
             <!-- Username, Password, and other user info stored in database-->
-            <p>Profile Username</p>
+            <p class="info">Profile Username</p>
         </section>
         <section>
             <h2>My Books</h2>
             <!-- list of books read are in database -->
             <!-- images of books read goes here, if no books have been read, it displays "No Books Read"-->
             <!-- clicking on a book goes to the readbook page to edit review or reccomend -->
-            <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></a>
-            <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></a>
-            <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></a>
-            <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></a>
-            <!-- plus button here has a pop up that lets you select a book to add from the datbase to your My Books list
-             it afterwards takes you to the readbook page for that book. This is also the websocket placeholder where books
-             are added in real time -->
-            <a href="readbook.html"><img alt="plusSymbol" src="plus.png"  width="150"/></a>
+             <div class="image-container">
+              <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="book"/></a>
+              <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="book"/></a>
+              <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="book"/></a>
+              <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="book"/></a>
+              <!-- plus button here has a pop up that lets you select a book to add from the datbase to your My Books list
+               it afterwards takes you to the readbook page for that book. This is also the websocket placeholder where books
+               are added in real time -->
+              <a href="readbook.html"><img alt="plusSymbol" src="plus.png"  width="150" class="book"/></a>
+            </div>
         </section>
+        <br>
         <section>
             <h2>My Wishlist</h2>
             <!-- list of books on wishlist are in database -->
             <!-- Image of books on wish list, if no books on wishlist, it says there are no books on your wishlist-->
             <!-- clicking one of these books goes to the notread book page so you can edit if you've read it or not-->
-            <p>No Books on Your Wishlist</p>
-            <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></a>
-            <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></a>
-            <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></a>
-            <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></a>
-            <!-- plus button here to add a book to your wishlist. It creates a pop up that lets you add a book
-             from the database and then takes you to the notreadbooks webpage  for that book This is also the 
-             websocket placeholder where books are added to the wishlist in real time -->
-            <a href="notreadbook.html"><img alt="plusSymbol" src="plus.png" width="150" /></a>
+            <div>
+              <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="book"/></a>
+              <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="book"/></a>
+              <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="book"/></a>
+              <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="book"/></a>
+              <!-- plus button here to add a book to your wishlist. It creates a pop up that lets you add a book
+               from the database and then takes you to the notreadbooks webpage  for that book This is also the 
+               websocket placeholder where books are added to the wishlist in real time -->
+              <a href="notreadbook.html"><img alt="plusSymbol" src="plus.png" width="150" class="book"/></a>
+            </div>
         </section>
+        <br>
         <section>
           <h2>Friends:</h2>
           <!-- list of friends are in database -->
-          <div>
-            <img alt="friendBubble" src="friendbubble.png" width="50" />
-            <img alt="friendBubble" src="friendbubble.png" width="50" />
-            <img alt="friendBubble" src="friendbubble.png" width="50" />
-            <img alt="friendBubble" src="friendbubble.png" width="50" />
-            <img alt="friendBubble" src="friendbubble.png" width="50" />
-            <!-- plus button here creates a pop up that lets you add a friend. This is also the websocket placeholder
+          <div class="friendbubble"></div>
+          <div class="friendbubble"></div>
+          <div class="friendbubble"></div>
+          <div class="friendbubble"></div>
+          <div class="friendbubble"></div>
+          <div class="friendbubble"></div>
+          <div class="friendbubble"></div>
+          <div class="friendbubble"></div>
+          <!-- plus button here creates a pop up that lets you add a friend. This is also the websocket placeholder
              where friends are added in real time -->
-            <img alt="plusSymbol" src="plus.png" width="50" />
-        </div>
+          <img alt="plusSymbol" src="plus.png" width="50"/>
         </section>
     </main>
 
     <!-- Footer -->
     <footer>
-        <hr />
         <div>Author: Nathan Stucki</div>
-        <a href="https://github.com/Stuck-on-the-puzzle/startup.git">GitHub</a>
+        <a href="https://github.com/Stuck-on-the-puzzle/startup.git" class="makelinkbig">GitHub</a>
     </footer>
   </body>
 </html>

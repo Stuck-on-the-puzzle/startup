@@ -1,18 +1,54 @@
-.bookshelf {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Responsive grid columns */
-    grid-gap: 10px; /* Space between books */
-    height: 100%; /* Make the bookshelf fill the entire height of the page */
-    padding: 10px;
+  main{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
-  
-  .book {
-    background-color: #8B4513;
-    height: 200px; /* Fixed height for books */
+
+  .info{
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    display:flex;
+    align-items: center;
     color: white;
     font-size: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
+  }
+
+  .book{
+    display: inline-block;
+    transition: all 0.3s ease;
+    transform-origin: center;
+    border-radius: 3%;
+  }
+
+  .book:hover {
+    animation: grow;
+    width: 17%;
+    height: 17%;
+  }
+
+  h2 {
+    text-decoration: underline;
+  }
+
+  .friendbubble{
+    display: inline-block;  /* Makes it a block-level element, but only takes up space for the content */
+    width: 75px;           /* Set width */
+    height: 75px;          /* Set height */
+    border-radius: 50%;     /* This creates the circle */
+    background-color: hsl(223, 100%, 32%); /* Set background color */
+    color: white;           /* Set text color */
+    text-align: left;     /* Center the text */
+    line-height: 75px;     /* Vertically center text inside the circle */
+    text-decoration: none;  /* Remove the underline */
+    font-weight: bold;      /* Optional: makes text bold */
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .friendbubble:hover {
+    animation: grow;
+    width: 100px;
+    height: 100px;
   }
