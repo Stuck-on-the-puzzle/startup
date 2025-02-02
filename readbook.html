@@ -34,24 +34,29 @@
 
     <!-- Main -->
     <main>
-        <h1>BookTitle</h1>
-        <p><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" /></p>
+        <h2>BookTitle</h2>
+        <p class="info">Profile Username</p>
+        <p><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" class="imgformat"/></p>
         <section>
-            <label for="review">Review: </label>
+          <div class="form-group">
             <!-- Review is stored in database, the review is also updated in real time so this is a websocket placeholder as well -->
-            <textarea id="review" name="review"></textarea>
+            <label for="review" class="reviewlabel">Review: </label>
+            <textarea class="form-control bg-primary text-light" style="height: 100px" placeholder="Wrtie Your Review Here!" 
+            id="review" name="review"></textarea>         
+          </div>
         </section>
         <!-- Section to recommend this book to a friend. Pop up will say reccomend book to [friend]? and they click yes or no
          this is also the websocket placholder to reccomend a book in real time -->
          <section>
-            <h3>Recommend to a Friend?</h3>
-            <div>
-                <img alt="friendBubble" src="friendbubble.png" width="50" />
-                <img alt="friendBubble" src="friendbubble.png" width="50" />
-                <img alt="friendBubble" src="friendbubble.png" width="50" />
-                <img alt="friendBubble" src="friendbubble.png" width="50" />
-                <img alt="friendBubble" src="friendbubble.png" width="50" />
-            </div>
+            <h2>Recommend to a Friend?</h2>
+            <div class="friendbubble"></div>
+            <div class="friendbubble"></div>
+            <div class="friendbubble"></div>
+            <div class="friendbubble"></div>
+            <div class="friendbubble"></div>
+            <div class="friendbubble"></div>
+            <div class="friendbubble"></div>
+            <div class="friendbubble"></div>
          </section>
     </main>
 

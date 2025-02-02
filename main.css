@@ -25,6 +25,10 @@
     margin-right: 20px;
    }
 
+   h2{
+    text-decoration: underline;
+   }
+
    .makelinkbig {
     color: #eff3f6;
     font-size: 18px;
@@ -51,12 +55,15 @@
     flex-direction: column;
     align-items: left;
     justify-content: space-around;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: hsl(223, 46%, 51%);
     color: white;
    }
 
    body.index-page main {
-    /*Get Books to be above and below login */
     align-items: center;
     background-image: url("BookShelf.png"), url("BookShelf.png");
     background-repeat: repeat-x; /* Repeat the image horizontally */
@@ -88,7 +95,42 @@
    border: none;
   }
 
+  .info{
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    display:flex;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+  }
 
+  .friendbubble{
+    display: inline-block;  /* Makes it a block-level element, but only takes up space for the content */
+    width: 75px;           /* Set width */
+    height: 75px;          /* Set height */
+    border-radius: 50%;     /* This creates the circle */
+    background-color: hsl(223, 100%, 32%); /* Set background color */
+    color: white;           /* Set text color */
+    text-align: left;     /* Center the text */
+    line-height: 75px;     /* Vertically center text inside the circle */
+    text-decoration: none;  /* Remove the underline */
+    font-weight: bold;      /* Optional: makes text bold */
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .friendbubble:hover {
+    animation: grow;
+    width: 100px;
+    height: 100px;
+  }
+
+  .imgformat {
+    display: flex;
+    border-radius: 3%;
+    text-align: center;
+  }
    @media screen and (max-width: 600px) {
     main {
       background-image: none;
