@@ -76,12 +76,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- `[x]` **Header, footer, and main content body** - I made a format for the headers, footers, and main parts of all my file. They have color and good formatting
+- `[x]` **Navigation elements** - I have navigation elements styled with css. They are colored to be seen easier and they grow when you hover over them
+- `[x]` **Responsive to window resizing** - I made all parts of my webstie able to resize to window resizing whether it shrink, reformats, or doesn't show
+- `[x]` **Application elements** - I styled all of my application elements. The books you interact with grow and act as a placeholder, the friends list is similar as well. The review box is styled to match the color scheme. The radio button selection is also styled and matches the color scheme
+- `[x]` **Application text content** - All text is formatted and can be easily read with the color scheme of the application
+- `[x]` **Application images** - I formatted my images to be consistent across all pages.
 
 ## 🚀 React part 1: Routing deliverable
 

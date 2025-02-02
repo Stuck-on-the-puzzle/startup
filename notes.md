@@ -29,11 +29,7 @@ I made sure I used the right structural elements for my website. I used the exam
 
 ## CSS
 
-This took a couple hours to get it how I wanted. It was important to make it responsive and Bootstrap helped with that. It looks great on all kinds of screen sizes.
-
-Bootstrap seems a bit like magic. It styles things nicely, but is very opinionated. You either do, or you do not. There doesn't seem to be much in between.
-
-I did like the navbar it made it super easy to build a responsive header.
+This took a couple hours to get it how I wanted. I had a hard time working with bootstrap and I felt like I had to fight it a lot. Maybe I did it wrong, but I got my website styled.
 
 ```html
       <nav class="navbar navbar-expand-lg bg-body-tertiary">

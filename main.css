@@ -127,7 +127,7 @@
   }
 
   .imgformat {
-    display: flex;
+    display: inline-block;
     border-radius: 3%;
     text-align: center;
   }
