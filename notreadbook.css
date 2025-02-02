@@ -1,0 +1,26 @@
+   .input-group {
+    display: flex !important;
+    flex-direction: column !important;
+
+  }
+  
+  .input-group-text {
+    border-radius: 5% !important;
+    margin-bottom: 5px !important;
+    border: none !important;
+    background-color: #0017c7b2 !important;
+    color: white !important;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.308) !important;
+    cursor: pointer;
+    transition: background-color 0.3s !important;
+  }
+
+  .input-group-text label {
+    margin-right: 5px;
+    cursor: pointer !important;
+  } 
+  
+  .input-group-text:hover {
+    background-color: #003fc7b2 !important; /* Change background color on hover */
+  }
+  
