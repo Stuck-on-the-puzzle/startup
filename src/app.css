@@ -8,7 +8,6 @@
    nav {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
    }
   
   header {
@@ -26,13 +25,16 @@
     list-style-type: none;
     display: flex;
     flex-wrap: wrap;
-    padding: 0;
+    justify-content: space-evenly;
+    padding: 10px;
+    margin: 0;
    }
 
    header li {
-    margin-right: 20px;
+    /* margin-right: 20px;
     flex-grow: 1;
-    min-width: 100px;
+    min-width: 100px; */
+    margin: 0 10px;
    }
 
    h2{
