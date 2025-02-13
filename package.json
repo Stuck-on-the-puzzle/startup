@@ -1,0 +1,32 @@
+{
+  "name": "startup",
+  "version": "1.0.0",
+  "description": "This website application will allow avid readers to keep track of the books they have read, rate/comment on books they have read, create a wishlist, and share with friends.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preivew": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stuck-on-the-puzzle/startup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stuck-on-the-puzzle/startup/issues"
+  },
+  "homepage": "https://github.com/Stuck-on-the-puzzle/startup#readme",
+  "devDependencies": {
+    "vite": "^6.1.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "react": "^19.0.0",
+    "react-bootstrap": "^2.10.9",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5"
+  }
+}
