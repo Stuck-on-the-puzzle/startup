@@ -1,10 +1,10 @@
-   .input-group {
+  #notreadbookform .input-group {
     display: flex !important;
     flex-direction: column !important;
 
   }
   
-  .input-group-text {
+  #notreadbookform .input-group-text {
     border-radius: 5% !important;
     margin-bottom: 5px !important;
     border: none !important;
@@ -15,12 +15,12 @@
     transition: background-color 0.3s !important;
   }
 
-  .input-group-text label {
+  #notreadbookform .input-group-text label {
     margin-right: 5px;
     cursor: pointer !important;
   } 
   
-  .input-group-text:hover {
+  #notreadbookform .input-group-text:hover {
     background-color: #003fc7b2 !important; /* Change background color on hover */
   }
   

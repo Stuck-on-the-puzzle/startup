@@ -1,0 +1,9 @@
+#loginform main {
+    align-items: center;
+    background-image: url("BookShelf.png"), url("BookShelf.png");
+    background-repeat: repeat-x; /* Repeat the image horizontally */
+    background-position: top center, bottom center; /* Position images at top and bottom */
+    background-size: 30%;
+    padding-top: 200px;
+    padding-bottom: 200px;
+   }

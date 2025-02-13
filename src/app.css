@@ -72,16 +72,6 @@
     color: white;
    }
 
-   body.index-page main {
-    align-items: center;
-    background-image: url("BookShelf.png"), url("BookShelf.png");
-    background-repeat: repeat-x; /* Repeat the image horizontally */
-    background-position: top center, bottom center; /* Position images at top and bottom */
-    background-size: 30%;
-    padding-top: 200px;
-    padding-bottom: 200px;
-   }
-
    .btn-primary {
     background-color: hsl(223, 100%, 28%) !important;
     color: white;
@@ -127,6 +117,11 @@
     font-weight: bold;      /* Optional: makes text bold */
     transition: all 0.3s ease;
     transform-origin: center;
+    margin-right: 5px;
+  }
+
+  .friendbubble:last-child {
+    margin-right: 0;
   }
 
   .friendbubble:hover {
