@@ -89,7 +89,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - `[x]` **Bundled using Vite** - I used vite to bundle and deploy my application.
 - `[x]` **Components** - All compenents have been converted to react and work how I want.
-- `[x]` **Router** - The navigation between my pages works and does not use html files.
+- `[x]` **Router** - The navigation between my pages works and does not use html files. This includes links on the home page images.
 
 ## 🚀 React part 2: Reactivity
 
