@@ -1,5 +1,6 @@
 import React from 'react';
 import './home.css';
+import { Link } from 'react-router-dom';
 
 export function Home() {
   return (
@@ -13,22 +14,22 @@ export function Home() {
         <section>
             <h2>My Books</h2>
              <div className="image-container">
-              <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></a>
-              <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></a>
-              <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></a>
-              <a href="readbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></a>
-              <a href="readbook.html"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></a>
+              <Link to="/readbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
+              <Link to="/readbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
+              <Link to="/readbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
+              <Link to="/readbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
+              <Link to="/readbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
             </div>
         </section>
         <br></br>
         <section>
             <h2>My Wishlist</h2>
             <div>
-              <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></a>
-              <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></a>
-              <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></a>
-              <a href="notreadbook.html"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></a>
-              <a href="notreadbook.html"><img alt="plusSymbol" src="plus.png" width="150" className="book"/></a>
+              <Link to="/notreadbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
+              <Link to="/notreadbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
+              <Link to="/notreadbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
+              <Link to="/notreadbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
+              <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png" width="150" className="book"/></Link>
             </div>
         </section>
         <br></br>
