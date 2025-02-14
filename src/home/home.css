@@ -1,8 +1,14 @@
-  .book{
+  #homeform .book{
     display: inline-block;
     transition: all 0.3s ease;
     transform-origin: center;
     border-radius: 3%;
+    margin-right: 5px;
+  }
+
+  .book:last-child {
+    margin-right: 0;
+
   }
 
   .book:hover {

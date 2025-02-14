@@ -10,7 +10,7 @@ export function ReadBook() {
         <section>
           <div className="form-group">
             <label for="review" className="reviewlabel">Review: </label>
-            <textarea className="form-control bg-primary text-light" style={{ height: '100px' }} placeholder="Wrtie Your Review Here!" 
+            <textarea className="form-control bg-primary text-light" style={{ height: '100px' }} placeholder="Write Your Review Here!" 
             id="review" name="review"></textarea>         
           </div>
         </section>
