@@ -1,6 +1,6 @@
 #loginform main {
     align-items: center;
-    background-image: url("BookShelf.png"), url("BookShelf.png");
+    background-image: url("../../public/BookShelf.png"), url("../../public/BookShelf.png");
     background-repeat: repeat-x; /* Repeat the image horizontally */
     background-position: top center, bottom center; /* Position images at top and bottom */
     background-size: 30%;
