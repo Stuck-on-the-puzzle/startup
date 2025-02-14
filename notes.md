@@ -31,46 +31,9 @@ I made sure I used the right structural elements for my website. I used the exam
 
 This took a couple hours to get it how I wanted. I had a hard time working with bootstrap and I felt like I had to fight it a lot. Maybe I did it wrong, but I got my website styled.
 
-```html
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand">
-            <img src="logo.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
-            Calmer
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" href="play.html">Play</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="index.html">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-```
-
-I also used SVG to make the icon and logo for the app. This turned out to be a piece of cake.
-
-```html
-<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100" height="100" fill="#0066aa" rx="10" ry="10" />
-  <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="72" font-family="Arial" fill="white">C</text>
-</svg>
-```
-
 ## React Part 1: Routing
 
-Setting up Vite and React was pretty simple. I had a bit of trouble because of conflicting CSS. This isn't as straight forward as you would find with Svelte or Vue, but I made it work in the end. If there was a ton of CSS it would be a real problem. It sure was nice to have the code structured in a more usable way.
+The code is structured much better and I like the organization. It was a pretty smooth process converting to React. I had to fix a few styling errors and structure, but nothing major
 
 ## React Part 2: Reactivity
 

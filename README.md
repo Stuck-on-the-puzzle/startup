@@ -87,9 +87,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - Routing between login and voting components.
+- `[x]` **Bundled using Vite** - I used vite to bundle and deploy my application.
+- `[x]` **Components** - All compenents have been converted to react and work how I want.
+- `[x]` **Router** - The navigation between my pages works and does not use html files.
 
 ## 🚀 React part 2: Reactivity
 
