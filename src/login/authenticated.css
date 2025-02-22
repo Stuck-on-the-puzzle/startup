@@ -1,0 +1,12 @@
+.readerName {
+    color: rgb(0, 12, 99);
+    font-size: 1.5em;
+    padding: 0.5em;
+}
+
+.container-fluid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

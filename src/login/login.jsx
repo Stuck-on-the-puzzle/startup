@@ -1,26 +1,29 @@
 import React from 'react';
 import './login.css'
 
-export function Login() {
+import { Unauthenticated } from './unauthenticated';
+import { Authenticated } from './authenticated';
+import { AuthState } from './authState';
+
+export function Login({ userName, authState, onAuthChange }) {
   return (
     <form id="loginform">
-    <main className="container-fluid">
-        <h1>Welcome to BookClub!📚</h1>
-        <form method="get" action="home">
-         <div className="input-group mb-3">
-          <label className="input-group-text" for="username">Username: </label>
-          <input className="form-control" type="text" id="username" name="username" placeholder="Enter Username Here" required pattern="^[^\s]*$"/>
-         </div>
-         <div className="input-group mb-3">
-          <label className="input-group-text" for="password">Password: </label>
-          <input className="form-control" type="password" id="password" name="password" placeholder="Enter Password Here" required pattern="^[^\s]*$"/>
-         </div>
-         <div className="d-flex gap-1">
-          <button type="submit" className="btn btn-primary">Login</button>
-          <button type="submit" className="btn btn-secondary">Create</button><br></br>
-         </div>
-        </form>
-    </main>
+      <main className="container-fluid">
+        <div>
+          {authState !== AuthState.Unknown && <h1>Welcome to BookClub!📚</h1>}
+          {authState === AuthState.Authenticated && (
+            <Authenticated userName={userName} onLogout={() => onAuthChange(userName, AuthState.Unauthenticated)} />
+          )}
+          {authState === AuthState.Unauthenticated && (
+            <Unauthenticated
+              userName={userName}
+              onLogin={(loginUserName) => {
+                onAuthChange(loginUserName, AuthState.Authenticated);
+              }}
+            />
+          )}
+        </div>
+      </main>
     </form>
   );
 }

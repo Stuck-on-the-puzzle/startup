@@ -2,7 +2,20 @@ import React from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
 
-export function Home() {
+export function Home(props) {
+  const [readBookUrl, setReadBookUrl] = React.useState("")
+  const [readBooks, setReadBooks] = React.useState([])
+  const [notReadBookUrl, setNotReadBookUrl] = React.useState("")
+  const [notReadBooks, setNotReadBooks] = React.useState([])
+
+  React.useEffect(() => {
+    setReadBookUrl("BookPlaceHolder.png");
+  }, []);
+
+  React.useEffect(() => {
+    setNotReadBookUrl("BookPlaceHolder.png");
+  }, []);
+
   return (
     <form id="homeform">
     <main>
@@ -11,28 +24,37 @@ export function Home() {
             <br></br>
             <p className="info">Profile Username</p>
         </section>
+
         <section>
             <h2>My Books</h2>
              <div className="image-container">
-              <Link to="/readbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
-              <Link to="/readbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
-              <Link to="/readbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
-              <Link to="/readbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
-              <Link to="/readbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
+              {books.length === 0 ? (
+                <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
+              ) : (
+                books.map((book,index) => (
+                  <Link to="/readbook"><img alt={`book-${index}`} src={readBookUrl} width="200" className="book"/></Link>
+                ))
+              )}              
             </div>
         </section>
+
         <br></br>
+
         <section>
             <h2>My Wishlist</h2>
-            <div>
-              <Link to="/notreadbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
-              <Link to="/notreadbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
-              <Link to="/notreadbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
-              <Link to="/notreadbook"><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="book"/></Link>
-              <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png" width="150" className="book"/></Link>
+            <div className="image-container">
+              {books.length === 0 ? (
+                <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
+              ) : (
+                books.map((book,index) => (
+                  <Link to="/notreadbook"><img alt={`book-${index}`} src={notReadBookUrl} width="200" className="book"/></Link>
+                ))
+              )}              
             </div>
         </section>
+
         <br></br>
+
         <section>
           <h2>Friends:</h2>
           <div className="friendbubble"></div>
@@ -45,6 +67,7 @@ export function Home() {
           <div className="friendbubble"></div>
           <img alt="plusSymbol" src="plus.png" width="50" className="imgformat"/>
         </section>
+
     </main>
     </form>
   );
