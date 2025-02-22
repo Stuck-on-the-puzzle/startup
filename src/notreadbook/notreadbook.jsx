@@ -6,7 +6,7 @@ export function NotReadBook(props) {
   const [userName, setUserName] = React.useState('')
   const [bookStatus, setBookStatus] = React.useState('booknotread');
   const [bookTitle, setBookTitle] = React.useState('No Title');
-  const [bookCover, setBookCover] = React.useState('No Cover')
+  const [bookCover, setBookCover] = React.useState('BookPlaceHolder.png')
   
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -32,7 +32,7 @@ export function NotReadBook(props) {
 
   const addNotReadBook = () => {
     const notReadBooks = JSON.parse(localStorage.getItem('notReadBooks')) || [];
-    wishBooks.push({ title: bookTitle, image: bookCover });
+    notReadBooks.push({ title: bookTitle, image: bookCover });
     localStorage.setItem('notReadBooks', JSON.stringify(notReadBooks));
   };
 
@@ -83,6 +83,7 @@ export function NotReadBook(props) {
         <br></br>
 
         <section>
+          {/* make this button take you back to the home screen!!! */}
         <Button variant='primary' onClick={submitBookStatus}>Submit!</Button>
         </section>
 

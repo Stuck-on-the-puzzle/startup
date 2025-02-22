@@ -1,21 +1,35 @@
 import React from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 export function Home(props) {
-  const [readBookUrl, setReadBookUrl] = React.useState("")
+  const [userName, setUserName] = React.useState('')
   const [readBooks, setReadBooks] = React.useState([])
-  const [notReadBookUrl, setNotReadBookUrl] = React.useState("")
-  const [notReadBooks, setNotReadBooks] = React.useState([])
+  const [wishBooks, setWishBooks] = React.useState([])
   const [friends, setFriends] = React.useState([])
 
   React.useEffect(() => {
-    setReadBookUrl("BookPlaceHolder.png");
-  }, []);
+      const profileName = localStorage.getItem('userName');
+      setUserName(profileName)
+    }, []);
 
   React.useEffect(() => {
-    setNotReadBookUrl("BookPlaceHolder.png");
+    const readBookList = JSON.parse(localStorage.getItem('readBooks')) || [];
+    const wishBookList = JSON.parse(localStorage.getItem('wishBooks')) || [];
+
+    setReadBooks(readBookList);
+    setWishBooks(wishBookList);
   }, []);
+
+  const clearLocalStorage = () => {
+    localStorage.removeItem('readBooks');
+    localStorage.removeItem('wishBooks');
+    localStorage.removeItem('notReadBooks');
+
+    setReadBooks([]);
+    setWishBooks([]);
+  };
 
   return (
     <form id="homeform">
@@ -23,7 +37,7 @@ export function Home(props) {
         <section>
             <h1>Welcome to BookClub!📚</h1>
             <br></br>
-            <p className="info">Profile Username</p>
+            <p className="info">{userName}</p>
         </section>
 
         <section>
@@ -33,7 +47,7 @@ export function Home(props) {
                 <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
               ) : (
                 readBooks.map((book,index) => (
-                  <Link to="/readbook"><img alt={`book-${index}`} src={readBookUrl} width="200" className="book"/></Link>
+                  <Link to="/readbook/${book.title}" key={index}><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
                 ))
               )}              
             </div>
@@ -44,17 +58,21 @@ export function Home(props) {
         <section>
             <h2>My Wishlist</h2>
             <div className="image-container">
-              {notReadBooks.length === 0 ? (
+              {wishBooks.length === 0 ? (
                 <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
               ) : (
-                notReadBooks.map((book,index) => (
-                  <Link to="/notreadbook"><img alt={`book-${index}`} src={notReadBookUrl} width="200" className="book"/></Link>
+                wishBooks.map((book,index) => (
+                  <Link to="/notreadbook"><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
                 ))
               )}              
             </div>
         </section>
 
         <br></br>
+
+        <section>
+        <Button variant='primary' onClick={clearLocalStorage}>Clear Books</Button>
+        </section>
 
         <section>
           <h2>Friends:</h2>
