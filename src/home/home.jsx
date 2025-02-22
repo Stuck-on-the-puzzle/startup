@@ -7,6 +7,7 @@ export function Home(props) {
   const [readBooks, setReadBooks] = React.useState([])
   const [notReadBookUrl, setNotReadBookUrl] = React.useState("")
   const [notReadBooks, setNotReadBooks] = React.useState([])
+  const [friends, setFriends] = React.useState([])
 
   React.useEffect(() => {
     setReadBookUrl("BookPlaceHolder.png");
@@ -28,10 +29,10 @@ export function Home(props) {
         <section>
             <h2>My Books</h2>
              <div className="image-container">
-              {books.length === 0 ? (
+              {readBooks.length === 0 ? (
                 <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
               ) : (
-                books.map((book,index) => (
+                readBooks.map((book,index) => (
                   <Link to="/readbook"><img alt={`book-${index}`} src={readBookUrl} width="200" className="book"/></Link>
                 ))
               )}              
@@ -43,10 +44,10 @@ export function Home(props) {
         <section>
             <h2>My Wishlist</h2>
             <div className="image-container">
-              {books.length === 0 ? (
+              {notReadBooks.length === 0 ? (
                 <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
               ) : (
-                books.map((book,index) => (
+                notReadBooks.map((book,index) => (
                   <Link to="/notreadbook"><img alt={`book-${index}`} src={notReadBookUrl} width="200" className="book"/></Link>
                 ))
               )}              
