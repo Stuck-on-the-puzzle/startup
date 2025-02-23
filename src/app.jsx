@@ -35,12 +35,15 @@ export default function App() {
             {authState === AuthState.Authenticated && (
               <li><NavLink to="home" className="makelinkbig">Home</NavLink></li>
             )}
-            {authState === AuthState.Authenticated && (
+
+            {/* DO NOT NEED TO ACCESS THESE ALL THE TIME */}
+            {/* {authState === AuthState.Authenticated && (
               <li><NavLink to="readbook" className="makelinkbig">BooksRead</NavLink></li>
             )}
             {authState === AuthState.Authenticated && (
               <li><NavLink to="notreadbook" className="makelinkbig">BooksNotRead</NavLink></li>
-            )}
+            )} */}
+            
         </ul>
         </nav>
         <hr />

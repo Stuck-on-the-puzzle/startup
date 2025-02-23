@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export function Home(props) {
+export function Home() {
   const [userName, setUserName] = React.useState('')
   const [readBooks, setReadBooks] = React.useState([])
   const [wishBooks, setWishBooks] = React.useState([])
@@ -37,7 +37,7 @@ export function Home(props) {
 
   const bookSelection = () => {
     const book1 = { title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"}
-    const book2 = { title: 'PlaceHolderBook2', image: "BookPlaceHolder.png"}
+    const book2 = { title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"}
     setBookDatabasePlaceHolder([book1, book2]);
     setShowModal(true);
   }
@@ -106,20 +106,17 @@ export function Home(props) {
         <Modal.Title>Select Book</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {bookDatabasePlaceHolder.length > 0 ? (
           <div className="book-selection">
             {bookDatabasePlaceHolder.map((book,index) => (
               <div key={index}>
                 <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.image }}>
+                {/* maybe change the class name for the image */}
                   <img alt={`book-${index}`} src={book.image} width="150" className="book" onClick={() => addBook(book)} />
                 </Link>
                 <p>{book.title}</p>
               </div>
             ))}
           </div>
-        ) : (
-          <p>No Books Available</p>
-        )}
       </Modal.Body>
     </Modal>
     </form>

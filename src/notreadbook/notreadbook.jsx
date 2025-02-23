@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './notreadbook.css';
 
-export function NotReadBook(props) {
+export function NotReadBook() {
   const location = useLocation();
   const { bookTitle, bookCover} = location.state || {};
   const [bookStatus, setBookStatus] = React.useState('booknotread')
@@ -60,6 +60,10 @@ export function NotReadBook(props) {
     } else {
       addBook('notReadBooks', book);
     }
+
+    const review = '';
+    localStorage.setItem(`${bookTitle}_review`, review)
+
   };
 
   return (
