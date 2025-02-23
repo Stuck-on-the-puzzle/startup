@@ -6,13 +6,25 @@ import './notreadbook.css';
 
 export function NotReadBook(props) {
   const location = useLocation();
-  const { bookTitle = 'Title Placeholder', bookCover = 'BookPlaceHolder.png' } = location.state || {};
+  const { bookTitle = 'BookTitle', bookCover = 'BookPlaceHolder.png' } = location.state || {};
+  const [bookStatus, setBookStatus] = React.useState('booknotread')
   const [userName, setUserName] = React.useState('')
-  const [bookStatus, setBookStatus] = React.useState('booknotread');
   
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
     setUserName(profileName)
+
+    const readBooks = JSON.parse(localStorage.getItem('readBooks')) || [];
+    const wishBooks = JSON.parse(localStorage.getItem('wishBooks')) || [];
+
+    if (readBooks.some(book => book.title === bookTitle))   {
+      setBookStatus('readbook');
+    }  else if (wishBooks.some(book => book.title === bookTitle)) {
+      setBookStatus('addwishlist');
+    } else {
+      setBookStatus('booknotread');
+    }
+
   }, []);
 
   const changeBookStatus = (e) => {
@@ -20,31 +32,33 @@ export function NotReadBook(props) {
     setBookStatus(selectedStatus);
   };
 
-  const addReadBook = () => {
-    const readBooks = JSON.parse(localStorage.getItem('readBooks')) || [];
-    readBooks.push({title: bookTitle, image: bookCover });
-    localStorage.setItem('readBooks',JSON.stringify(readBooks));
+  const addBook = (list, book) => {
+    const books = JSON.parse(localStorage.getItem(list)) || [];
+    const bookInList = books.some(b => b.title === book.title);
+    if (!bookInList) {
+      books.push(book);
+      localStorage.setItem(list, JSON.stringify(books));
+    }
   };
 
-  const addWishBook = () => {
-    const wishBooks = JSON.parse(localStorage.getItem('wishBooks')) || [];
-    wishBooks.push({ title: bookTitle, image: bookCover });
-    localStorage.setItem('wishBooks', JSON.stringify(wishBooks));
-  };
-
-  const addNotReadBook = () => {
-    const notReadBooks = JSON.parse(localStorage.getItem('notReadBooks')) || [];
-    notReadBooks.push({ title: bookTitle, image: bookCover });
-    localStorage.setItem('notReadBooks', JSON.stringify(notReadBooks));
+  const removeBook = (list, bookTitle) => {
+    const books = JSON.parse(localStorage.getItem(list)) || [];
+    const updatedList = books.filter(book => book.title !== bookTitle);
+    localStorage.setItem(list, JSON.stringify(updatedList))
   };
 
   const submitBookStatus = () => {
+    removeBook('readBooks', bookTitle)
+    removeBook('wishBooks', bookTitle)
+    removeBook('notReadBooks', bookTitle)
+
+    const book = { title: bookTitle, image: bookCover};
     if (bookStatus === 'readbook') {
-      addReadBook();
+      addBook('readBooks', book);
     } else if (bookStatus === 'addwishlist') {
-      addWishBook();
+      addBook('wishBooks', book);
     } else {
-      addNotReadBook();
+      addBook('notReadBooks', book);
     }
   };
 
@@ -83,7 +97,6 @@ export function NotReadBook(props) {
         <br></br>
 
         <section>
-          {/* make this button take you back to the home screen!!! */}
           <Link to="/home"><Button variant='primary' onClick={submitBookStatus}>Submit!</Button></Link>
         </section>
 
