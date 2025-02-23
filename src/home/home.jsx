@@ -2,12 +2,16 @@ import React from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export function Home(props) {
   const [userName, setUserName] = React.useState('')
   const [readBooks, setReadBooks] = React.useState([])
   const [wishBooks, setWishBooks] = React.useState([])
   const [friends, setFriends] = React.useState([])
+  const [showModal, setShowModal] = React.useState(false);
+  const [bookDatabasePlaceHolder, setBookDatabasePlaceHolder] = React.useState([]);
+  const [selectedBook, setSelectedBook] = React.useState(null);
 
   React.useEffect(() => {
       const profileName = localStorage.getItem('userName');
@@ -31,6 +35,18 @@ export function Home(props) {
     setWishBooks([]);
   };
 
+  const bookSelection = () => {
+    const book1 = { title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"}
+    const book2 = { title: 'PlaceHolderBook2', image: "BookPlaceHolder.png"}
+    setBookDatabasePlaceHolder([book1, book2]);
+    setShowModal(true);
+  }
+
+  const addBook = (book) => {
+    setSelectedBook(book);
+    setShowModal(false);
+  }
+
   return (
     <form id="homeform">
     <main>
@@ -44,10 +60,10 @@ export function Home(props) {
             <h2>My Books</h2>
              <div className="image-container">
                 {readBooks.map((book,index) => (
-                    <Link to="/readbook" key={index} state={{ bookTitle: book.title, bookCover: book.image, bookStatus: book.status}}><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
+                    <Link to="/readbook" key={index} state={{ bookTitle: book.title, bookCover: book.image}}><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
                   )
                 )}   
-                <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>           
+                <img alt="plusSymbol" src="plus.png"  width="150" className="book" onClick={bookSelection}/>        
             </div>
         </section>
 
@@ -57,10 +73,10 @@ export function Home(props) {
             <h2>My Wishlist</h2>
             <div className="image-container">
               {wishBooks.map((book,index) => (
-                  <Link to="/notreadbook" key={index} state={{ bookTitle: book.title, bookCover: book.image, bookStatus: book.status}}><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
+                  <Link to="/notreadbook" key={index} state={{ bookTitle: book.title, bookCover: book.image}}><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
                 )
               )}  
-              <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>            
+              <img alt="plusSymbol" src="plus.png"  width="150" className="book" onClick={bookSelection}/>              
             </div>
         </section>
 
@@ -84,6 +100,28 @@ export function Home(props) {
         </section>
 
     </main>
+
+    <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>Select Book</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {bookDatabasePlaceHolder.length > 0 ? (
+          <div className="book-selection">
+            {bookDatabasePlaceHolder.map((book,index) => (
+              <div key={index}>
+                <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.image }}>
+                  <img alt={`book-${index}`} src={book.image} width="150" className="book" onClick={() => addBook(book)} />
+                </Link>
+                <p>{book.title}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No Books Available</p>
+        )}
+      </Modal.Body>
+    </Modal>
     </form>
   );
 }

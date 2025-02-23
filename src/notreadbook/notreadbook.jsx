@@ -6,7 +6,7 @@ import './notreadbook.css';
 
 export function NotReadBook(props) {
   const location = useLocation();
-  const { bookTitle = 'BookTitle', bookCover = 'BookPlaceHolder.png' } = location.state || {};
+  const { bookTitle, bookCover} = location.state || {};
   const [bookStatus, setBookStatus] = React.useState('booknotread')
   const [userName, setUserName] = React.useState('')
   
@@ -87,7 +87,7 @@ export function NotReadBook(props) {
               <label for="booknotread">
               <div className="input-group-text">
                 <label for="booknotread">I Have Not Read This Book!</label>
-                <input default className="form-check-input mt-0" type="radio" id="booknotread" value="booknotread" name="bookstatus" checked={bookStatus === 'booknotread'} onChange={changeBookStatus}/>
+                <input className="form-check-input mt-0" type="radio" id="booknotread" value="booknotread" name="bookstatus" checked={bookStatus === 'booknotread'} onChange={changeBookStatus}/>
               </div>
               </label>
             </div>
