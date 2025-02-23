@@ -47,7 +47,7 @@ export function Home(props) {
                 <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
               ) : (
                 readBooks.map((book,index) => (
-                  <Link to="/readbook/${book.title}" key={index}><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
+                  <Link to="/readbook" key={index} state={{ bookTitle: book.title, bookCover: book.image}}><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
                 ))
               )}              
             </div>
@@ -62,7 +62,7 @@ export function Home(props) {
                 <Link to="/notreadbook"><img alt="plusSymbol" src="plus.png"  width="150" className="book"/></Link>
               ) : (
                 wishBooks.map((book,index) => (
-                  <Link to="/notreadbook"><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
+                  <Link to="/notreadbook" key={index} state={{ bookTitle: book.title, bookCover: book.image}}><img alt={`book-${index}`} src={book.image} width="200" className="book"/></Link>
                 ))
               )}              
             </div>

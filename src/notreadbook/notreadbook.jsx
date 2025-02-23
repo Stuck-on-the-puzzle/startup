@@ -1,12 +1,14 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './notreadbook.css';
 
 export function NotReadBook(props) {
+  const location = useLocation();
+  const { bookTitle = 'Title Placeholder', bookCover = 'BookPlaceHolder.png' } = location.state || {};
   const [userName, setUserName] = React.useState('')
   const [bookStatus, setBookStatus] = React.useState('booknotread');
-  const [bookTitle, setBookTitle] = React.useState('No Title');
-  const [bookCover, setBookCover] = React.useState('BookPlaceHolder.png')
   
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -44,15 +46,13 @@ export function NotReadBook(props) {
     } else {
       addNotReadBook();
     }
-    setBookTitle('Book Title');
-    setBookCover('BookPlaceHolder.png');
   };
 
   return (
     <main>
-        <h2>BookTitle</h2>
+        <h2>{bookTitle}</h2>
         <p className="info">{userName}</p>
-        <p><img alt="bookplaceholder" src="BookPlaceHolder.png" width="200" className="imgformat"/></p>
+        <p><img alt={bookTitle} src={bookCover} width="200" className="imgformat"/></p>
 
         <section>
             <h2>Book Status:</h2>
@@ -84,7 +84,7 @@ export function NotReadBook(props) {
 
         <section>
           {/* make this button take you back to the home screen!!! */}
-        <Button variant='primary' onClick={submitBookStatus}>Submit!</Button>
+          <Link to="/home"><Button variant='primary' onClick={submitBookStatus}>Submit!</Button></Link>
         </section>
 
         <br></br>
