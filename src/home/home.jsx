@@ -61,7 +61,7 @@ export function Home() {
   const friendSelection = () => {
     setFriendsToSelect([]); // Resets friend selection
 
-    // THIS IS THE USER LIST PLACE HOLDER
+    // THIS IS THE USER LIST PLACE HOLDER MAY NEED TO ADD WISHLIST BOOKS SO THAT DATA STRUCTURE MATCHES USERNAME AND OTHER USERS
     const userListPlaceholder = [
       { name: 'John', books: [{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"}]},
       { name: 'Rose', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"}] },
