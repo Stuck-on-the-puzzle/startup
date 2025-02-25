@@ -63,9 +63,13 @@ export function ReadBook() {
         <section>
           <h2>Recommend to a Friend?</h2>
           <div className="friend-container">
-            {friends.map((friend, index) => (
-              <div key={index} className="friendbubble" onClick={sendReccomendation}>{friend.name}</div>
-            ))}
+            {friends.length === 0 ? (
+              <p>You Have No Friends...</p>
+            ) : (
+              friends.map((friend, index) => (
+                <div key={index} className="friendbubble" onClick={sendReccomendation}>{friend.name}</div>
+              ))
+            )}
           </div>
         </section>
     </main>

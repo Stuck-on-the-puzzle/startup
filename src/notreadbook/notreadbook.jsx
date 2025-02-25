@@ -7,8 +7,9 @@ export function NotReadBook() {
   const location = useLocation();
   const navigate = useNavigate();
   const { bookTitle, bookCover} = location.state || {};
-  const [bookStatus, setBookStatus] = React.useState('booknotread')
-  const [userName, setUserName] = React.useState('')
+  const [bookStatus, setBookStatus] = React.useState('booknotread');
+  const [userName, setUserName] = React.useState('');
+  const [friends, setFriends] = React.useState([]);
   
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -24,6 +25,9 @@ export function NotReadBook() {
     } else {
       setBookStatus('booknotread');
     }
+
+    const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
+    // MAKE FRIENDS AN ARRAY OF FRIENDS THAT HAVE READ THE BOOK
 
   }, []);
 
