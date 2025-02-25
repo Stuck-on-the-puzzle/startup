@@ -13,6 +13,7 @@ export function Home() {
   const [showModal, setShowModal] = React.useState(false);
   const [showFriendModal, setShowFriendModal] = React.useState(false);
   const [booksToSelect, setBooksToSelect] = React.useState([]);
+  const [removeFriendModal, setRemoveFriendModal] = React.useState(false);
 
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -62,10 +63,10 @@ export function Home() {
 
     // THIS IS THE USER LIST PLACE HOLDER MAY NEED TO ADD WISHLIST BOOKS SO THAT DATA STRUCTURE MATCHES USERNAME AND OTHER USERS
     const userListPlaceholder = [
-      { name: 'John', books: [{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"}]},
-      { name: 'Rose', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"}] },
+      { name: 'John', books: [{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png", review: 'PlaceHolderBook2 was great!'}]},
+      { name: 'Rose', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png", review: 'I thought PlaceHolderBook1 was too boring'}] },
       { name: 'Charles', books: [] },
-      { name: 'Emilee', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"},{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"}]}
+      { name: 'Emilee', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png", review: 'I really enjoyed reading PlaceHolderBook1'},{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png", review: 'I thought PlaceHolderBook2 was a little bland'}]}
       ]
 
     const selectableFriends = userListPlaceholder.filter(friend => {
@@ -76,9 +77,9 @@ export function Home() {
       setFriendsToSelect(prevFriends => [...prevFriends, friend])
     });
     setShowFriendModal(true)
-  }
+  };
 
-  const addBook = (book) => {
+  const addBook = () => {
     setShowModal(false);
   };
 
@@ -87,6 +88,15 @@ export function Home() {
     localStorage.setItem('friendList', JSON.stringify(updatedFriends));
     setFriends(prevFriends => [...prevFriends, friend]);
     setShowFriendModal(false);
+  };
+
+  const removeFriendPopUp = () => {
+    setRemoveFriendModal(true);
+  };
+
+  const removeFriend = () => {
+    localStorage.removeItem('friendList');
+    setShowModal(false);
   }
 
   return (
@@ -126,6 +136,7 @@ export function Home() {
 
         <section>
         <Button variant='primary' onClick={clearLocalStorage}>Clear Books</Button>
+        <Button variant='primary' onClick={removeFriendPopUp}>Remove A Friend</Button>
         </section>
 
         <section>
@@ -153,7 +164,7 @@ export function Home() {
                 <div key={index}>
                   <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.image }}>
                   {/* maybe change the class name for the image */}
-                    <img alt={`book-${index}`} src={book.image} width="150" className="book" onClick={() => addBook(book)} />
+                    <img alt={`book-${index}`} src={book.image} width="150" className="book" onClick={() => addBook()} />
                   </Link>
                   <p>{book.title}</p>
                 </div>
@@ -174,6 +185,24 @@ export function Home() {
             friendsToSelect.map((friend, index) => (
               <div key={index}>
                 <p onClick={() => addFriend(friend)}>{friend.name}</p>
+              </div>
+            )))}
+        </div>
+      </Modal.Body>
+    </Modal>
+
+    <Modal show={removeFriendModal} onHide={() => setRemoveFriendModal(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>Select a Friend to Remove</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="friend-selection">
+          {friendsToSelect.length === 0 ? (
+            <p>No Friends To Remove</p>
+          ) : (
+            friendsToSelect.map((friend, index) => (
+              <div key={index}>
+                <p onClick={() => removeFriend(friend)}>{friend.name}</p>
               </div>
             )))}
         </div>

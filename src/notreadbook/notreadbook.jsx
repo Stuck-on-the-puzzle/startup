@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './notreadbook.css';
 
@@ -10,6 +11,8 @@ export function NotReadBook() {
   const [bookStatus, setBookStatus] = React.useState('booknotread');
   const [userName, setUserName] = React.useState('');
   const [friends, setFriends] = React.useState([]);
+  const [reviewModal, setReviewModal] = React.useState(false);
+  const [selectedReview, setSelectedReview] = React.useState('');
   
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -27,7 +30,9 @@ export function NotReadBook() {
     }
 
     const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
-    // MAKE FRIENDS AN ARRAY OF FRIENDS THAT HAVE READ THE BOOK
+    
+    const friendsWhoReadBook = friendList.filter(friend => friend.books.some(book => book.title === bookTitle));
+    setFriends(friendsWhoReadBook)
 
   }, []);
 
@@ -73,13 +78,20 @@ export function NotReadBook() {
   const submitButtonNav = () => {
     submitBookStatus();
     if (bookStatus === 'readbook') {
-      navigate('/readbook', {state: { bookTitle: bookTitle, bookCover: bookCover } });
+      navigate('/readbook', {state: { bookTitle: bookTitle, bookCover: bookCover }});
     } else {
       navigate('/home');
     }
   };
 
+  const seeReview = (friend) => {
+    const friendReview = friend.books.find(book => book.title === bookTitle)?.review;
+    setSelectedReview(friendReview || "No Review Available.");
+    setReviewModal(true);
+  }
+
   return (
+    <form>
     <main>
         <h2>{bookTitle}</h2>
         <p className="info">{userName}</p>
@@ -121,16 +133,30 @@ export function NotReadBook() {
 
          <section>
             <h2>Friends Who Have Read this Book:</h2>
-            <div className='friend-container'>
-              <div className="friendbubble"></div>
-              <div className="friendbubble"></div>
-              <div className="friendbubble"></div>
-              <div className="friendbubble"></div>
-              <div className="friendbubble"></div>
-              <div className="friendbubble"></div>
+            <div className="friend-container">
+              {friends.length === 0 ? (
+                <p>No Friends Have Read This Book</p>
+              ) : (
+                friends.map((friend, index) => (
+                  <div key={index} className="friendbubble" onClick={() => seeReview(friend)}>{friend.name}</div>
+                ))
+              )}
             </div>
          </section>
 
     </main>
+
+    <Modal show={reviewModal} onHide={() => setReviewModal(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>Your Friend's Review:</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="review-container">
+          <p>{selectedReview}</p>
+        </div>
+      </Modal.Body>
+    </Modal>
+
+    </form>
   );
 }
