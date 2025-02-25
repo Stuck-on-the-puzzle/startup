@@ -9,21 +9,24 @@ export function Home() {
   const [readBooks, setReadBooks] = React.useState([])
   const [wishBooks, setWishBooks] = React.useState([])
   const [friends, setFriends] = React.useState([])
+  const [friendsToSelect, setFriendsToSelect] = React.useState([])
   const [showModal, setShowModal] = React.useState(false);
+  const [showFriendModal, setShowFriendModal] = React.useState(false);
   const [booksToSelect, setBooksToSelect] = React.useState([]);
   const [selectedBook, setSelectedBook] = React.useState(null);
 
   React.useEffect(() => {
-      const profileName = localStorage.getItem('userName');
-      setUserName(profileName)
-    }, []);
+    const profileName = localStorage.getItem('userName');
+    setUserName(profileName);
 
-  React.useEffect(() => {
     const readBookList = JSON.parse(localStorage.getItem('readBooks')) || [];
     const wishBookList = JSON.parse(localStorage.getItem('wishBooks')) || [];
+    const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
 
+    console.log(readBookList, wishBookList, friendList);
     setReadBooks(readBookList);
     setWishBooks(wishBookList);
+    setFriends(friendList);
   }, []);
 
   const clearLocalStorage = () => {
@@ -48,7 +51,7 @@ export function Home() {
 
     const selectableBooks = booksDatabase.filter(book => {
       return !allBooks.some(b => b.title === book.title);
-    })
+    });
 
     selectableBooks.forEach(book => {
       setBooksToSelect(prevBooks => [...prevBooks, book])
@@ -56,10 +59,34 @@ export function Home() {
     setShowModal(true);
   };
 
+  const friendSelection = () => {
+
+    setFriendsToSelect([]); // Resets friend selection
+
+    // THIS IS THE USER LIST PLACE HOLDER
+    const userListPlaceholder = ['John','Jeremy','Rose','Charles', 'Emilee', 'Anna', 'Logan', 'Lee', 'Jen', 'Name1', 'Name2', 'Name3']
+
+    const selectableFriends = userListPlaceholder.filter(friend => {
+      return !friends.includes(friend);
+    });
+
+    selectableFriends.forEach(friend => {
+      setFriendsToSelect(prevFriends => [...prevFriends, friend])
+    });
+    setShowFriendModal(true)
+  }
+
   const addBook = (book) => {
-    setSelectedBook(book);
+    setSelectedBook(prevBooks => [...prevBooks, book]);
     setShowModal(false);
   };
+
+  const addFriend = (friend) => {
+    const updatedFriends = [...friends, friend];
+    localStorage.setItem('friendList', JSON.stringify(updatedFriends));
+    setFriends(prevFriends => [...prevFriends, friend]);
+    setShowFriendModal(false);
+  }
 
   return (
     <form id="homeform">
@@ -102,15 +129,12 @@ export function Home() {
 
         <section>
           <h2>Friends:</h2>
-          <div className="friendbubble"></div>
-          <div className="friendbubble"></div>
-          <div className="friendbubble"></div>
-          <div className="friendbubble"></div>
-          <div className="friendbubble"></div>
-          <div className="friendbubble"></div>
-          <div className="friendbubble"></div>
-          <div className="friendbubble"></div>
-          <img alt="plusSymbol" src="plus.png" width="50" className="imgformat"/>
+          <div className="friend-container">
+            {friends.map((friend) => (
+              <div key={friend} className="friendbubble">{friend}</div>
+            ))}
+            <img alt="plusSymbol" src="plus.png" width="50" className="imgformat" onClick={friendSelection}/>
+          </div>
         </section>
 
     </main>
@@ -134,6 +158,24 @@ export function Home() {
                 </div>
               )))}  
           </div>
+      </Modal.Body>
+    </Modal>
+
+    <Modal show={showFriendModal} onHide={() => setShowFriendModal(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>Select a Friend to Add</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="friend-selection">
+          {friendsToSelect.length === 0 ? (
+            <p>No Friends Left To Add...</p>
+          ) : (
+            friendsToSelect.map((friend, index) => (
+              <div key={index}>
+                <p onClick={() => addFriend(friend)}>{friend}</p>
+              </div>
+            )))}
+        </div>
       </Modal.Body>
     </Modal>
     </form>

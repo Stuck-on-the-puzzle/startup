@@ -53,15 +53,17 @@ export function ReadBook() {
         <br />
 
         <section>
-           <h2>Recommend to a Friend?</h2>
-           <div className="friendbubble"></div>
-           <div className="friendbubble"></div>
-           <div className="friendbubble"></div>
-           <div className="friendbubble"></div>
-           <div className="friendbubble"></div>
-           <div className="friendbubble"></div>
-           <div className="friendbubble"></div>
-           <div className="friendbubble"></div>
+          <h2>Recommend to a Friend?</h2>
+          <div className='friend-container'>
+            <div className="friendbubble"></div>
+            <div className="friendbubble"></div>
+            <div className="friendbubble"></div>
+            <div className="friendbubble"></div>
+            <div className="friendbubble"></div>
+            <div className="friendbubble"></div>
+            <div className="friendbubble"></div>
+            <div className="friendbubble"></div>
+          </div>
         </section>
     </main>
 

@@ -117,12 +117,14 @@ export function NotReadBook() {
 
          <section>
             <h2>Friends Who Have Read this Book:</h2>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
+            <div className='friend-container'>
+              <div className="friendbubble"></div>
+              <div className="friendbubble"></div>
+              <div className="friendbubble"></div>
+              <div className="friendbubble"></div>
+              <div className="friendbubble"></div>
+              <div className="friendbubble"></div>
+            </div>
          </section>
 
     </main>
