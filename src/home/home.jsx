@@ -39,7 +39,6 @@ export function Home() {
   };
 
   const bookSelection = () => {
-
     setBooksToSelect([]); // This resets the book selection
 
     // THIS IS THE DATABASE PLACEHOLDER
@@ -60,14 +59,18 @@ export function Home() {
   };
 
   const friendSelection = () => {
-
     setFriendsToSelect([]); // Resets friend selection
 
     // THIS IS THE USER LIST PLACE HOLDER
-    const userListPlaceholder = ['John','Jeremy','Rose','Charles', 'Emilee', 'Anna', 'Logan', 'Lee', 'Jen', 'Name1', 'Name2', 'Name3']
+    const userListPlaceholder = [
+      { name: 'John', books: [{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"}]},
+      { name: 'Rose', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"}] },
+      { name: 'Charles', books: [] },
+      { name: 'Emilee', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"},{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"}]}
+      ]
 
     const selectableFriends = userListPlaceholder.filter(friend => {
-      return !friends.includes(friend);
+      return !friends.some(existingFriend => existingFriend.name === friend.name);
     });
 
     selectableFriends.forEach(friend => {
@@ -130,8 +133,8 @@ export function Home() {
         <section>
           <h2>Friends:</h2>
           <div className="friend-container">
-            {friends.map((friend) => (
-              <div key={friend} className="friendbubble">{friend}</div>
+            {friends.map((friend, index) => (
+              <div key={index} className="friendbubble">{friend.name}</div>
             ))}
             <img alt="plusSymbol" src="plus.png" width="50" className="imgformat" onClick={friendSelection}/>
           </div>
@@ -172,7 +175,7 @@ export function Home() {
           ) : (
             friendsToSelect.map((friend, index) => (
               <div key={index}>
-                <p onClick={() => addFriend(friend)}>{friend}</p>
+                <p onClick={() => addFriend(friend)}>{friend.name}</p>
               </div>
             )))}
         </div>
