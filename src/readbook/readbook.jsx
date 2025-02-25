@@ -11,13 +11,17 @@ export function ReadBook() {
   const [ bookReview, setReview] = React.useState('');
   const [userName, setUserName] = React.useState('');
   const [showModal, setShowModal] = React.useState(false);
+  const [friends, setFriends] = React.useState([]); 
 
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
-    setUserName(profileName)
+    setUserName(profileName);
 
     const bookReviewTmp = localStorage.getItem(`${bookTitle}_review`);
     setReview(bookReviewTmp || '');
+
+    const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
+    setFriends(friendList);
   }, []);
 
   const submitReview = () => {
@@ -27,6 +31,10 @@ export function ReadBook() {
   const warningMessage = () => {
     setShowModal(true);
   };
+
+  const sendReccomendation = () => {
+    //PLACEHOLDER FOR SENDING RECCOMENDATIONS
+  }
 
   return (
     <form>
@@ -54,15 +62,10 @@ export function ReadBook() {
 
         <section>
           <h2>Recommend to a Friend?</h2>
-          <div className='friend-container'>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
-            <div className="friendbubble"></div>
+          <div className="friend-container">
+            {friends.map((friend, index) => (
+              <div key={index} className="friendbubble" onClick={sendReccomendation}>{friend.name}</div>
+            ))}
           </div>
         </section>
     </main>

@@ -5,11 +5,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 export function Home() {
-  const [userName, setUserName] = React.useState('')
-  const [readBooks, setReadBooks] = React.useState([])
-  const [wishBooks, setWishBooks] = React.useState([])
-  const [friends, setFriends] = React.useState([])
-  const [friendsToSelect, setFriendsToSelect] = React.useState([])
+  const [userName, setUserName] = React.useState('');
+  const [readBooks, setReadBooks] = React.useState([]);
+  const [wishBooks, setWishBooks] = React.useState([]);
+  const [friends, setFriends] = React.useState([]);
+  const [friendsToSelect, setFriendsToSelect] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showFriendModal, setShowFriendModal] = React.useState(false);
   const [booksToSelect, setBooksToSelect] = React.useState([]);
