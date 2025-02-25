@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './readbook.css';
@@ -9,6 +10,7 @@ export function ReadBook() {
   const { bookTitle, bookCover} = location.state || {};
   const [ bookReview, setReview] = React.useState('');
   const [userName, setUserName] = React.useState('');
+  const [showModal, setShowModal] = React.useState(false);
 
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -22,7 +24,12 @@ export function ReadBook() {
     localStorage.setItem(`${bookTitle}_review`, bookReview);
   };
 
+  const warningMessage = () => {
+    setShowModal(true);
+  };
+
   return (
+    <form>
     <main>
         <h2>{bookTitle}</h2>
         <p className="info">{userName}</p>
@@ -40,7 +47,7 @@ export function ReadBook() {
 
         <section>
           <Link to="/home"><Button variant='primary' className="me-1" onClick={submitReview}>Submit!</Button></Link>
-          <Link to="/notreadbook" state={{ bookTitle: bookTitle, bookCover: bookCover}}><Button variant='primary' className="me-1">Change Book Status?</Button></Link>
+          <Button variant='primary' className="me-1" onClick={warningMessage}>Change Book Status?</Button>
         </section>
 
         <br />
@@ -57,5 +64,20 @@ export function ReadBook() {
            <div className="friendbubble"></div>
         </section>
     </main>
+
+    <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>WARNING!</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="warning-message">
+          <h3>Changing This Books Status Will Permanently Delete Your Review</h3>
+          <p>Do You Want to Continue?</p>
+          <Link to="/notreadbook" state={{ bookTitle: bookTitle, bookCover: bookCover}}><Button variant='primary' className="me-1">Yes, Change Book Status</Button></Link>
+          <Button variant='primary' className="me-1" onClick={() => setShowModal(false)}>No, Do Not Change Book Status</Button>
+        </div>
+      </Modal.Body>
+    </Modal>
+    </form>
   );
 }

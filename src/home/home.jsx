@@ -3,7 +3,6 @@ import './home.css';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { NotReadBook } from '../notreadbook/notreadbook';
 
 export function Home() {
   const [userName, setUserName] = React.useState('')
