@@ -13,7 +13,6 @@ export function Home() {
   const [showModal, setShowModal] = React.useState(false);
   const [showFriendModal, setShowFriendModal] = React.useState(false);
   const [booksToSelect, setBooksToSelect] = React.useState([]);
-  const [selectedBook, setSelectedBook] = React.useState(null);
 
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -80,7 +79,6 @@ export function Home() {
   }
 
   const addBook = (book) => {
-    setSelectedBook(prevBooks => [...prevBooks, book]);
     setShowModal(false);
   };
 
