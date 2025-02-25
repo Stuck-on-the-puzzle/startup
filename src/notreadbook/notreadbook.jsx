@@ -1,11 +1,11 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './notreadbook.css';
 
 export function NotReadBook() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { bookTitle, bookCover} = location.state || {};
   const [bookStatus, setBookStatus] = React.useState('booknotread')
   const [userName, setUserName] = React.useState('')
@@ -52,7 +52,7 @@ export function NotReadBook() {
     removeBook('wishBooks', bookTitle)
     removeBook('notReadBooks', bookTitle)
 
-    const book = { title: bookTitle, image: bookCover};
+    const book = { title: bookTitle, image: bookCover };
     if (bookStatus === 'readbook') {
       addBook('readBooks', book);
     } else if (bookStatus === 'addwishlist') {
@@ -64,6 +64,15 @@ export function NotReadBook() {
     const review = '';
     localStorage.setItem(`${bookTitle}_review`, review)
 
+  };
+
+  const submitButtonNav = () => {
+    submitBookStatus();
+    if (bookStatus === 'readbook') {
+      navigate('/readbook', {state: { bookTitle: bookTitle, bookCover: bookCover } });
+    } else {
+      navigate('/home');
+    }
   };
 
   return (
@@ -101,7 +110,7 @@ export function NotReadBook() {
         <br></br>
 
         <section>
-          <Link to="/home"><Button variant='primary' onClick={submitBookStatus}>Submit!</Button></Link>
+          <Button variant='primary' onClick={submitButtonNav}>Submit!</Button>
         </section>
 
         <br></br>
