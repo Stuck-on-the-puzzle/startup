@@ -44,7 +44,7 @@ export function NotReadBook() {
   const removeBook = (list, bookTitle) => {
     const books = JSON.parse(localStorage.getItem(list)) || [];
     const updatedList = books.filter(book => book.title !== bookTitle);
-    localStorage.setItem(list, JSON.stringify(updatedList))
+    localStorage.setItem(list, JSON.stringify(updatedList));
   };
 
   const submitBookStatus = () => {

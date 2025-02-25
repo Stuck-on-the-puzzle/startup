@@ -36,7 +36,7 @@ export default function App() {
               <li><NavLink to="home" className="makelinkbig">Home</NavLink></li>
             )}
 
-            {/* DO NOT NEED TO ACCESS THESE ALL THE TIME */}
+            {/* DO NOT NEED TO ACCESS THESE ALL THE TIME ANYMORE*/}
             {/* {authState === AuthState.Authenticated && (
               <li><NavLink to="readbook" className="makelinkbig">BooksRead</NavLink></li>
             )}

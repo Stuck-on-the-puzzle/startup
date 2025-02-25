@@ -3,6 +3,7 @@ import './home.css';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { NotReadBook } from '../notreadbook/notreadbook';
 
 export function Home() {
   const [userName, setUserName] = React.useState('')
@@ -10,7 +11,7 @@ export function Home() {
   const [wishBooks, setWishBooks] = React.useState([])
   const [friends, setFriends] = React.useState([])
   const [showModal, setShowModal] = React.useState(false);
-  const [bookDatabasePlaceHolder, setBookDatabasePlaceHolder] = React.useState([]);
+  const [booksToSelect, setBooksToSelect] = React.useState([]);
   const [selectedBook, setSelectedBook] = React.useState(null);
 
   React.useEffect(() => {
@@ -36,16 +37,30 @@ export function Home() {
   };
 
   const bookSelection = () => {
-    const book1 = { title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"}
-    const book2 = { title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"}
-    setBookDatabasePlaceHolder([book1, book2]);
+
+    setBooksToSelect([]); // This resets the book selection
+
+    // THIS IS THE DATABASE PLACEHOLDER
+    const booksDatabase = [
+      { title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"},
+      { title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"} ];
+
+    const allBooks = [...readBooks, ...wishBooks];
+
+    const selectableBooks = booksDatabase.filter(book => {
+      return !allBooks.some(b => b.title === book.title);
+    })
+
+    selectableBooks.forEach(book => {
+      setBooksToSelect(prevBooks => [...prevBooks, book])
+    });
     setShowModal(true);
-  }
+  };
 
   const addBook = (book) => {
     setSelectedBook(book);
     setShowModal(false);
-  }
+  };
 
   return (
     <form id="homeform">
@@ -107,15 +122,18 @@ export function Home() {
       </Modal.Header>
       <Modal.Body>
           <div className="book-selection">
-            {bookDatabasePlaceHolder.map((book,index) => (
-              <div key={index}>
-                <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.image }}>
-                {/* maybe change the class name for the image */}
-                  <img alt={`book-${index}`} src={book.image} width="150" className="book" onClick={() => addBook(book)} />
-                </Link>
-                <p>{book.title}</p>
-              </div>
-            ))}
+            {booksToSelect.length === 0 ? (
+              <p>No Books Available</p>
+            ) : (
+              booksToSelect.map((book,index) => (
+                <div key={index}>
+                  <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.image }}>
+                  {/* maybe change the class name for the image */}
+                    <img alt={`book-${index}`} src={book.image} width="150" className="book" onClick={() => addBook(book)} />
+                  </Link>
+                  <p>{book.title}</p>
+                </div>
+              )))}  
           </div>
       </Modal.Body>
     </Modal>
