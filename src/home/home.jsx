@@ -11,9 +11,6 @@ const recommendationPlaceHolder = (displayRecommendation, friends) => {
       const randomBook = randomFriend.books[Math.floor(Math.random() * randomFriend.books.length)];
       displayRecommendation({booktitle: randomBook.title, from: randomFriend.name });
     }
-    else {
-      displayRecommendation({booktitle: 'some book', from: 'some friend'});
-    }
   }, 5000);
 };
 
