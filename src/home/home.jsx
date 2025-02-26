@@ -23,7 +23,6 @@ export function Home() {
     const wishBookList = JSON.parse(localStorage.getItem('wishBooks')) || [];
     const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
 
-    console.log(readBookList, wishBookList, friendList);
     setReadBooks(readBookList);
     setWishBooks(wishBookList);
     setFriends(friendList);
@@ -94,9 +93,11 @@ export function Home() {
     setRemoveFriendModal(true);
   };
 
-  const removeFriend = () => {
-    localStorage.removeItem('friendList');
-    setShowModal(false);
+  const removeFriend = (friend) => {
+    const updatedFriends = friends.filter(findfriend => findfriend.name !== friend.name);
+    localStorage.setItem('friendList', JSON.stringify(updatedFriends));
+    setFriends(updatedFriends);
+    setRemoveFriendModal(false);
   }
 
   return (
@@ -135,8 +136,8 @@ export function Home() {
         <br></br>
 
         <section>
-        <Button variant='primary' onClick={clearLocalStorage}>Clear Books</Button>
-        <Button variant='primary' onClick={removeFriendPopUp}>Remove A Friend</Button>
+        <Button variant='primary' className="me-1" onClick={clearLocalStorage}>Clear Books</Button>
+        <Button variant='primary' className="me-1" onClick={removeFriendPopUp}>Remove A Friend</Button>
         </section>
 
         <section>
@@ -200,7 +201,7 @@ export function Home() {
           {friendsToSelect.length === 0 ? (
             <p>No Friends To Remove</p>
           ) : (
-            friendsToSelect.map((friend, index) => (
+            friends.map((friend, index) => (
               <div key={index}>
                 <p onClick={() => removeFriend(friend)}>{friend.name}</p>
               </div>
