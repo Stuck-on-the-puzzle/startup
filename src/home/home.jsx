@@ -4,6 +4,19 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
+const recommendationPlaceHolder = (displayRecommendation, friends) => {
+  setInterval(() => {
+    const randomFriend = friends[Math.floor(Math.random() * friends.length)];
+    if (randomFriend.books.length > 0) {
+      const randomBook = randomFriend.books[Math.floor(Math.random() * randomFriend.books.length)];
+      displayRecommendation({booktitle: randomBook.title, from: randomFriend.name });
+    }
+    else {
+      displayRecommendation({booktitle: 'some book', from: 'some friend'});
+    }
+  }, 5000);
+};
+
 export function Home() {
   const [userName, setUserName] = React.useState('');
   const [readBooks, setReadBooks] = React.useState([]);
@@ -14,6 +27,7 @@ export function Home() {
   const [showFriendModal, setShowFriendModal] = React.useState(false);
   const [booksToSelect, setBooksToSelect] = React.useState([]);
   const [removeFriendModal, setRemoveFriendModal] = React.useState(false);
+  const [recommendedBook, setRecommendedBook] = React.useState('');
 
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -26,6 +40,8 @@ export function Home() {
     setReadBooks(readBookList);
     setWishBooks(wishBookList);
     setFriends(friendList);
+
+    recommendationPlaceHolder(displayRecommendation, friendList);
   }, []);
 
   const clearLocalStorage = () => {
@@ -98,7 +114,12 @@ export function Home() {
     localStorage.setItem('friendList', JSON.stringify(updatedFriends));
     setFriends(updatedFriends);
     setRemoveFriendModal(false);
-  }
+  };
+
+  const displayRecommendation = (recommendation) => {
+    setRecommendedBook(`${recommendation.from} recommends ${recommendation.booktitle}`)
+  };
+
 
   return (
     <form id="homeform">
@@ -108,6 +129,12 @@ export function Home() {
             <br></br>
             <p className="info">{userName}</p>
         </section>
+
+        {recommendedBook && (
+          <div className="recommendation-container">
+            <p>{recommendedBook}</p>
+          </div>
+        )}
 
         <section>
             <h2>My Books</h2>

@@ -156,3 +156,15 @@
       background-image: none;
     }
    }
+
+   .recommendation-container {
+    position: fixed;
+    right: 20px;
+    background-color: hsl(224, 100%, 95%);
+    color: hsl(224, 100%, 38%);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px hsl(0, 0%, 0%);
+    font-size: 1.2em;
+    z-index: 10;
+   }
