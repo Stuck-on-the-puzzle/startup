@@ -95,8 +95,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- `[x]` **All functionality implemented or mocked out** - I have all the functionality I wanted implemented or mocked out. There is a lot of functionality so you can play around and see what it can do. I made a mini user and book database to add books and friends. Functionality is working and looks good
+- `[x]` **Hooks** - I used Hooks to implement the features on my application. I used useState a lot but also used useEffect and setInterval.
 
 ## 🚀 Service deliverable
 
