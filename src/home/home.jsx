@@ -198,7 +198,7 @@ export function Home() {
       </Modal.Header>
       <Modal.Body>
         <div className="friend-selection">
-          {friendsToSelect.length === 0 ? (
+          {friends.length === 0 ? (
             <p>No Friends To Remove</p>
           ) : (
             friends.map((friend, index) => (
