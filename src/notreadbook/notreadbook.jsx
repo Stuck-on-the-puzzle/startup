@@ -132,7 +132,7 @@ export function NotReadBook() {
         <br></br>
 
          <section>
-            <h2>Friends Who Have Read this Book:</h2>
+            <h2>Friends Who Have Read this Book, Click to See Their Review!</h2>
             <div className="friend-container">
               {friends.length === 0 ? (
                 <p>No Friends Have Read This Book</p>
