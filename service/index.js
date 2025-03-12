@@ -55,7 +55,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   res.status(204).end();
 });
 
-// Middleware to verify that the user is authorized to call and endpoit
+// Middleware to verify that the user is authroized to call an endpoint
 const verifyAuth = async (req, res, next) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
@@ -70,7 +70,7 @@ apiRouter.get('/reviews', verifyAuth, (_req, res) => {
   res.send(reviews);
 });
 
-// Submit Revoews
+// Submit Reviews
 apiRouter.post('/review', verifyAuth, (req, res) => {
   reviews = updateReviews(req.body);
   res.send(reviews);
@@ -132,9 +132,6 @@ function setAuthCookie(res, authToken) {
     sameSite: 'strict',
   });
 }
-
-
-
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

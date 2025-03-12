@@ -38,3 +38,7 @@ The code is structured much better and I like the organization. It was a pretty 
 ## React Part 2: Reactivity
 
 There is so much to learn and so much you can do with reactivity. I found just looking at what is possivble is really helpful. This was pretty difficult to learn everything I needed to do, but it was rewarding to see the finished product.
+
+## Web Service
+
+There is a lot going on when it comes to webservice and it was overwhelming at first.
