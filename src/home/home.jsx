@@ -25,6 +25,8 @@ export function Home() {
   const [booksToSelect, setBooksToSelect] = React.useState([]);
   const [removeFriendModal, setRemoveFriendModal] = React.useState(false);
   const [recommendedBook, setRecommendedBook] = React.useState('');
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [fetchedBooks, setFetchedBooks] = React.useState([]);
 
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -50,23 +52,47 @@ export function Home() {
     setWishBooks([]);
   };
 
+  const searching = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const enterButtonSearch = (event) => {
+    if (event.key === 'Enter') {
+      searchBooks();
+    }
+  };
+
+  const searchBooks = async () => {
+    try {
+      const response = await fetch(`https://openlibrary.org/search.json?title=${searchTerm}`);
+      const data = await response.json();
+      const books = data.docs.map((book) => ({
+        title: book.title,
+        coverImage: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` : null,
+      }));
+      setFetchedBooks(books);
+    } catch (error) {
+      console.error('Error Fetching Books:', error);
+    }
+  };
+
   const bookSelection = () => {
     setBooksToSelect([]); // This resets the book selection
 
-    // THIS IS THE DATABASE PLACEHOLDER
-    const booksDatabase = [
-      { title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"},
-      { title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"} ];
+    // THIS IS THE DATABASE PLACEHOLDER COMMENTED OUT BECAUSE REPLACED BY THIRDPARTY API
+    // const booksDatabase = [
+    //   { title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"},
+    //   { title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"} ];
 
-    const allBooks = [...readBooks, ...wishBooks];
+    // const allBooks = [...readBooks, ...wishBooks];
 
-    const selectableBooks = booksDatabase.filter(book => {
-      return !allBooks.some(b => b.title === book.title);
-    });
+    // const selectableBooks = booksDatabase.filter(book => {
+    //   return !allBooks.some(b => b.title === book.title);
+    // });
 
-    selectableBooks.forEach(book => {
-      setBooksToSelect(prevBooks => [...prevBooks, book])
-    });
+    // selectableBooks.forEach(book => {
+    //   setBooksToSelect(prevBooks => [...prevBooks, book])
+    // });
     setShowModal(true);
   };
 
@@ -182,15 +208,23 @@ export function Home() {
       </Modal.Header>
       <Modal.Body>
           <div className="book-selection">
-            {booksToSelect.length === 0 ? (
-              <p>No Books Available</p>
+            <input type="text" value={searchTerm} onChange={searching} onKeyDown={enterButtonSearch} placeholder="Search For Book by Title" />
+            <Button variant="primary" onClick={searchBooks}>Search</Button>
+            {fetchedBooks.length === 0 ? (
+              <p>No Books Found</p>
             ) : (
-              booksToSelect.map((book,index) => (
+              fetchedBooks.map((book,index) => (
                 <div key={index}>
-                  <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.image }}>
-                  {/* maybe change the class name for the image */}
-                    <img alt={`book-${index}`} src={book.image} width="150" className="book" onClick={() => addBook()} />
-                  </Link>
+                  {book.coverImage ? (
+                    <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.coverImage }}>
+                    {/* removed classname */}
+                      <img alt={`book-${index}`} src={book.coverImage} width="150" onClick={() => addBook()} />
+                    </Link>
+                  ) : (
+                    <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.coverImage }}>
+                      <img alt="NoCoverPlaceHolder" src="/BookPlaceHolder.png" width="150" onClick={() => addBook()} />
+                    </Link>
+                  )}
                   <p>{book.title}</p>
                 </div>
               )))}  

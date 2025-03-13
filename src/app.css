@@ -76,6 +76,7 @@
     background-color: hsl(223, 100%, 28%) !important;
     color: white;
     border: none !important;
+    margin-left: 5px;
   }
 
   .btn-secondary {
