@@ -4,6 +4,8 @@
     transform-origin: center;
     border-radius: 3%;
     margin-right: 5px;
+    min-width: 170px;
+    min-height: 170px;
   }
 
   .book:last-child {

@@ -22,11 +22,11 @@ export function Home() {
   const [friendsToSelect, setFriendsToSelect] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showFriendModal, setShowFriendModal] = React.useState(false);
-  const [booksToSelect, setBooksToSelect] = React.useState([]);
+
   const [removeFriendModal, setRemoveFriendModal] = React.useState(false);
   const [recommendedBook, setRecommendedBook] = React.useState('');
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [fetchedBooks, setFetchedBooks] = React.useState([]);
+  const [bookDatabase, setBookDatabase] = React.useState([]);
 
   React.useEffect(() => {
     const profileName = localStorage.getItem('userName');
@@ -70,15 +70,13 @@ export function Home() {
         title: book.title,
         coverImage: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` : null,
       }));
-      setFetchedBooks(books);
+      setBookDatabase(books);
     } catch (error) {
       console.error('Error Fetching Books:', error);
     }
   };
 
   const bookSelection = () => {
-    setBooksToSelect([]); // This resets the book selection
-
     // THIS IS THE DATABASE PLACEHOLDER COMMENTED OUT BECAUSE REPLACED BY THIRDPARTY API
     // const booksDatabase = [
     //   { title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"},
@@ -210,10 +208,10 @@ export function Home() {
           <div className="book-selection">
             <input type="text" value={searchTerm} onChange={searching} onKeyDown={enterButtonSearch} placeholder="Search For Book by Title" />
             <Button variant="primary" onClick={searchBooks}>Search</Button>
-            {fetchedBooks.length === 0 ? (
+            {bookDatabase.length === 0 ? (
               <p>No Books Found</p>
             ) : (
-              fetchedBooks.map((book,index) => (
+              bookDatabase.map((book,index) => (
                 <div key={index}>
                   {book.coverImage ? (
                     <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.coverImage }}>

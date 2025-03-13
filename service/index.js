@@ -65,12 +65,12 @@ const verifyAuth = async (req, res, next) => {
   }
 };
 
-// Get user Profile Info
+// Get user Profile Info (user, friends, readbooks, wishlistbooks)
 apiRouter.get('/user/profile', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    res.send({ username: user.username, friends: user.friends });
-    return
+    res.send({ username: user.username, readBooks: user.readBooks, wishBooks: user.wishBooks, friends: user.friends });
+    return;
   }
   res.statusMessage(401).send({ msg: 'Unauthorized' });
 });
@@ -88,6 +88,69 @@ apiRouter.get('/user/friends', verifyAuth, async (req, res) => {
 // Get Reviews
 apiRouter.get('/reviews', verifyAuth, (_req, res) => {
   res.send(reviews);
+});
+
+
+// Add book to read books
+apiRouter.post('/user/readbooks', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    const { book } = req.body;
+    user.readBooks.push(book);
+    res.send(user.readBooks);
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// Add book to wishlist
+apiRouter.post('/user/wishbooks', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    const { book } = req.body;
+    user.wishBooks.push(book);
+    res.send(user.wishBooks);
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// remove a book from one of the lists
+apiRouter.delete('user/books', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    const { book, list } = req.body;
+    const targetList = user[list];
+    const updatedBooks = targetList.filter(b => b.title !== book.title);
+    user[list] = updatedBooks;
+    res.send(user[list]);
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// Add Freinds
+apiRouter.post('/user/friends', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    const { friend } = req.body;
+    user.friends.push(friend);
+    res.send(user.friends);
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// Remove Friends
+apiRouter.delete('/user/friends', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    const { friend } = req.body;
+    user.friends = user.friends.filter(f => f.name !== friend.name);
+    res.send(user.friends);
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
 });
 
 // Submit Reviews
