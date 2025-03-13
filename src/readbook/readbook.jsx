@@ -21,12 +21,24 @@ export function ReadBook() {
 
   const submitReview = async () => {
     const newReview = { user: userName, book: bookTitle, review: bookReview };
-    
-    const response = await fetch('api/review', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newReview),
-    }); 
+
+    try {
+      const response = await fetch('api/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newReview),
+      });
+
+      if (response.ok) {
+        console.log("Review Submitted!");
+      }
+      else {
+      const errorData = await response.json();
+      console.error("Error:", errorData);
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error)
+    }
   };
 
   const warningMessage = () => {
@@ -36,16 +48,6 @@ export function ReadBook() {
   const sendReccomendation = () => {
     console.log(`Sending recommendation to ${friendName}`);
     //PLACEHOLDER FOR SENDING RECCOMENDATIONS MAYBE DELETE WHO KNOWS
-  }
-
-  async function saveReview(review) {
-    const newReview = { user: userName, book: bookTitle, review: review };
-
-    await fetch('/api/review', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(review),
-    });
   }
 
   const fetchUserProfile = async () => {
@@ -64,7 +66,7 @@ export function ReadBook() {
     const response = await fetch(`/api/reviews`);
     const reviews = await response.json();
     const userReview = reviews.find(
-      (review) => review.user === username && review.book === bookTitle
+      (review) => review.user === userName && review.book === bookTitle
     );
 
     setReview(userReview ? userReview.review : '');
