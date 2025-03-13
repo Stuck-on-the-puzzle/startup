@@ -4,11 +4,12 @@ const cookieParser = require('cookie-parser');
 const bycrypt = require('bcryptjs');
 const uuid = require('uuid');
 
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
+const authCookieName = 'authToken'; ////CHECK THIS PLEASE
+
 // Memory Data Structures
 let users = [];
-let reviews = []
-
-const port = process.argv.length > 2 ? process.argv[2] : 4000;
+let reviews = [];
 
 app.use(express.json());
 
@@ -25,7 +26,6 @@ apiRouter.post('/auth/create', async (req, res) => {
     res.status(409).send({ msg: 'Existing User' });
   } else {
     const user = await createUser(req.body.username, req.body.password);
-
     setAuthCookie(res,user.token);
     res.send({ username: user.username });
   }
@@ -37,7 +37,7 @@ apiRouter.post('/auth/login', async (req, res) => {
   if (user) {
     if (await bycrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
-      setAuthCookies(res, user.token);
+      setAuthCookie(res, user.token);
       res.send({ username: user.username });
       return;
     }
@@ -65,6 +65,26 @@ const verifyAuth = async (req, res, next) => {
   }
 };
 
+// Get user Profile Info
+apiRouter.get('user/profile', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    res.send({ username: user.username, friends: user,friends });
+    return
+  }
+  res.statusMessage(401).send({ msg: 'Unauthorized' });
+});
+
+// Get user friends
+apiRouter.get('/user/friends', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    res.send(user.friends);
+    return
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
 // Get Reviews
 apiRouter.get('/reviews', verifyAuth, (_req, res) => {
   res.send(reviews);
@@ -72,7 +92,21 @@ apiRouter.get('/reviews', verifyAuth, (_req, res) => {
 
 // Submit Reviews
 apiRouter.post('/review', verifyAuth, (req, res) => {
-  reviews = updateReviews(req.body);
+  const { user, book, review } = req.body;
+  let found = false;
+
+  for (const [i, prevReview] of reviews.entries()) {
+    if (prevReview.user === user && prevReview.book === book) {
+      reviews[i].review = review;
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    reviews.push({ user, book, review });
+  }
+
   res.send(reviews);
 });
 
@@ -87,24 +121,6 @@ app.use((_req, res) => {
 });
 
 // Helper Functions!!
-// review data structure isn't finalized so the .person/.book might need to be renamed
-function updateReviews(newReview) {
-  let found = false;
-  for (const [i, prevReview] of reviews.entries()) {
-    if (prevReview.person === newReview.person && prevReview.book === newReview.book) {
-      reviews.splice(i, 1, newReview)
-      found = true;
-      break;
-    }
-  }
-
-  if (!found) {
-    reviews.push(newReview)
-  }
-
-  return reviews;
-}
-
 // Function to create user
 async function createUser(username, password) {
   const passwordHash = await bcrypt.hash(password, 10);
@@ -113,6 +129,7 @@ async function createUser(username, password) {
     username: username,
     password: passwordHash,
     token: uuid.v4(),
+    friends: [],
   };
   users.push(user);
 
@@ -122,7 +139,6 @@ async function createUser(username, password) {
 // Function to find user
 async function findUser(field, value) {
   if (!value) return null;
-
   return users.find((u) => u[field] === value);
 }
 

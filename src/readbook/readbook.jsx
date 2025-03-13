@@ -17,15 +17,16 @@ export function ReadBook() {
     const profileName = localStorage.getItem('userName');
     setUserName(profileName);
 
-    const bookReviewTmp = localStorage.getItem(`${bookTitle}_review`);
-    setReview(bookReviewTmp || '');
+    fetchReviewForBook(profileName, bookTitle);
+    setReview(bookReview || '');
 
     const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
     setFriends(friendList);
   }, []);
 
   const submitReview = () => {
-    localStorage.setItem(`${bookTitle}_review`, bookReview);
+    saveReview(bookReview)
+    // localStorage.setItem(`${bookTitle}_review`, bookReview);
   };
 
   const warningMessage = () => {
@@ -36,6 +37,26 @@ export function ReadBook() {
     //PLACEHOLDER FOR SENDING RECCOMENDATIONS
   }
 
+  async function saveReview(review) {
+    const newReview = { user: userName, book: bookTitle, review: review };
+
+    await fetch('/api/review', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(review),
+    });
+  }
+
+  async function fetchReviewForBook(username, bookTitle) {
+    const response = await fetch(`/api/reviews`);
+    const reviews = await response.json();
+    const userReview = reviews.find(
+      (review) => review.user === username && review.book === bookTitle
+    );
+
+    setReview(userReview ? userReview.review : '');
+  }
+  
   return (
     <form>
     <main>
