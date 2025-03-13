@@ -14,19 +14,19 @@ export function ReadBook() {
   const [friends, setFriends] = React.useState([]); 
 
   React.useEffect(() => {
-    const profileName = localStorage.getItem('userName');
-    setUserName(profileName);
-
-    fetchReviewForBook(profileName, bookTitle);
-    setReview(bookReview || '');
-
-    const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
-    setFriends(friendList);
+    fetchUserProfile();
+    fetchReviewForBook();
+    fetchFreindList();
   }, []);
 
-  const submitReview = () => {
-    saveReview(bookReview)
-    // localStorage.setItem(`${bookTitle}_review`, bookReview);
+  const submitReview = async () => {
+    const newReview = { user: userName, book: bookTitle, review: bookReview };
+    
+    const response = await fetch('api/review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newReview),
+    }); 
   };
 
   const warningMessage = () => {
@@ -34,7 +34,8 @@ export function ReadBook() {
   };
 
   const sendReccomendation = () => {
-    //PLACEHOLDER FOR SENDING RECCOMENDATIONS
+    console.log(`Sending recommendation to ${friendName}`);
+    //PLACEHOLDER FOR SENDING RECCOMENDATIONS MAYBE DELETE WHO KNOWS
   }
 
   async function saveReview(review) {
@@ -47,7 +48,19 @@ export function ReadBook() {
     });
   }
 
-  async function fetchReviewForBook(username, bookTitle) {
+  const fetchUserProfile = async () => {
+    const response = await fetch(`/api/user/profile`);
+    const data = await response.json();
+    setUserName(data.username);
+  };
+
+  const fetchFreindList = async () => {
+    const response = await fetch(`/api/user/friends`);
+    const data = await response.json();
+    setFriends(data);
+  }
+
+  const fetchReviewForBook = async () => {
     const response = await fetch(`/api/reviews`);
     const reviews = await response.json();
     const userReview = reviews.find(
@@ -56,7 +69,7 @@ export function ReadBook() {
 
     setReview(userReview ? userReview.review : '');
   }
-  
+
   return (
     <form>
     <main>
