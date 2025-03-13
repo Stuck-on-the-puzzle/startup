@@ -105,6 +105,7 @@ function updateReviews(newReview) {
   return reviews;
 }
 
+// Function to create user
 async function createUser(username, password) {
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -118,6 +119,7 @@ async function createUser(username, password) {
   return user;
 }
 
+// Function to find user
 async function findUser(field, value) {
   if (!value) return null;
 
