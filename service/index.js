@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
-const bycrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -35,7 +35,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 apiRouter.post('/auth/login', async (req, res) => {
   const user = await findUser('username', req.body.username);
   if (user) {
-    if (await bycrypt.compare(req.body.password, user.password)) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
       setAuthCookie(res, user.token);
       res.send({ username: user.username });
@@ -66,10 +66,10 @@ const verifyAuth = async (req, res, next) => {
 };
 
 // Get user Profile Info
-apiRouter.get('user/profile', verifyAuth, async (req, res) => {
+apiRouter.get('/user/profile', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    res.send({ username: user.username, friends: user,friends });
+    res.send({ username: user.username, friends: user.friends });
     return
   }
   res.statusMessage(401).send({ msg: 'Unauthorized' });
@@ -111,7 +111,7 @@ apiRouter.post('/review', verifyAuth, (req, res) => {
 });
 
 // Default Error Handler
-app.use(function (err, rew, res, next) {
+app.use(function (err, req, res, next) {
   res.status(500).send({ type: err.name, message: err.message });
 });
 
@@ -145,7 +145,7 @@ async function findUser(field, value) {
 // setAuthCookie in the HTTP response
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
-    secure: true,
+    secure: false, ///////////////CHANGE THIS TO TRUE
     httpOnly: true,
     sameSite: 'strict',
   });
