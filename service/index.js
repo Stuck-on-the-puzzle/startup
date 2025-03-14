@@ -106,7 +106,13 @@ apiRouter.post('/user/readbooks', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     const { book } = req.body;
-    user.readBooks.push(book);
+    if (!user.readBooks) {
+      user.readBooks = [];
+    }
+
+    if (!user.readBooks.some(b => b.title === boook.title)) {
+      user.readBooks.push(book);
+    }
     res.send(user.readBooks);
     return;
   }
@@ -118,7 +124,12 @@ apiRouter.post('/user/wishbooks', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     const { book } = req.body;
-    user.wishBooks.push(book);
+    if (!user.wishBooks) {
+      user.wishBooks = [];
+    }
+    if (!user.wishBooks.some(b => b.title === book.title)) {
+      user.wishBooks.push(book);
+    }
     res.send(user.wishBooks);
     return;
   }
@@ -131,9 +142,12 @@ apiRouter.delete('user/books', verifyAuth, async (req, res) => {
   if (user) {
     const { book, list } = req.body;
     const targetList = user[list];
-    const updatedBooks = targetList.filter(b => b.title !== book.title);
-    user[list] = updatedBooks;
-    res.send(user[list]);
+    if (targetList) {
+      user[list] = targetList.filter(b => b.title !== book.title);
+      res.send(user[list]);
+    } else {
+      res.status(400).send({ msg: 'List does not exist' });
+    }
     return;
   }
   res.status(401).send({ msg: 'Unauthorized' });

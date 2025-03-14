@@ -7,7 +7,7 @@ import './notreadbook.css';
 export function NotReadBook() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { bookTitle, bookCover} = location.state || {};
+  const { bookTitle, bookCover } = location.state || {};
   const [bookStatus, setBookStatus] = React.useState('booknotread');
   const [userName, setUserName] = React.useState('');
   const [friends, setFriends] = React.useState([]);
@@ -15,25 +15,36 @@ export function NotReadBook() {
   const [selectedReview, setSelectedReview] = React.useState('');
   
   React.useEffect(() => {
-    const profileName = localStorage.getItem('userName');
-    setUserName(profileName)
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`/api/user/profile`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const data = await response.json();
+        setUserName(data.username)
+        const friendList = data.friends;
+        const readBooks = data.readBooks;
+        const wishBooks = data.wishBooks;
+        const friendsWhoReadBook = friendList.filter(friend => friend.books.some(book => book.title === bookTitle));
+        setFriends(friendsWhoReadBook)
 
-    const readBooks = JSON.parse(localStorage.getItem('readBooks')) || [];
-    const wishBooks = JSON.parse(localStorage.getItem('wishBooks')) || [];
+        if (readBooks.some(book => book.title === bookTitle))   {
+          setBookStatus('readbook');
+        }  else if (wishBooks.some(book => book.title === bookTitle)) {
+          setBookStatus('addwishlist');
+        } else {
+          setBookStatus('booknotread');
+        }
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+      }
+    };
 
-    if (readBooks.some(book => book.title === bookTitle))   {
-      setBookStatus('readbook');
-    }  else if (wishBooks.some(book => book.title === bookTitle)) {
-      setBookStatus('addwishlist');
-    } else {
-      setBookStatus('booknotread');
-    }
-
-    const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
-    
-    const friendsWhoReadBook = friendList.filter(friend => friend.books.some(book => book.title === bookTitle));
-    setFriends(friendsWhoReadBook)
-
+    fetchUserData();   
   }, []);
 
   const changeBookStatus = (e) => {
@@ -56,22 +67,47 @@ export function NotReadBook() {
     localStorage.setItem(list, JSON.stringify(updatedList));
   };
 
-  const submitBookStatus = () => {
-    removeBook('readBooks', bookTitle)
-    removeBook('wishBooks', bookTitle)
-    removeBook('notReadBooks', bookTitle)
-
+  const submitBookStatus = async () => {
     const book = { title: bookTitle, image: bookCover };
-    if (bookStatus === 'readbook') {
-      addBook('readBooks', book);
-    } else if (bookStatus === 'addwishlist') {
-      addBook('wishBooks', book);
-    } else {
-      addBook('notReadBooks', book);
-    }
 
-    const review = '';
-    localStorage.setItem(`${bookTitle}_review`, review)
+    try {
+      await fetch(`/api/user/books`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify({ book, list: 'readBooks' }),
+      });
+
+      await fetch(`/api/user/books`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify({ book, list: 'wishBooks' }),
+      });
+
+      await fetch(`/api/user/books`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify({ book })
+      });
+
+      if (bookStatus === 'readbook') {
+        await fetch(`/api/user/readbooks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', },
+          body: JSON.stringify({ book }),
+        });
+      } else if (bookStatus === 'addwishlist') {
+        await fetch(`/api/user/wishbooks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', },
+          body: JSON.stringify({ book }),
+        });
+      }
+
+      const review = '';
+      localStorage.setItem(`${bookTitle}_review`, review);
+    } catch (err) {
+      console.error('Error updating book status:', err);
+    }
 
   };
 

@@ -14,9 +14,25 @@ export function ReadBook() {
   const [friends, setFriends] = React.useState([]); 
 
   React.useEffect(() => {
-    fetchUserProfile();
-    fetchReviewForBook();
-    fetchFreindList();
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`/api/user/profile`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const data = await response.json();
+        setUserName(data.username)
+        setFriends(data.friends || []);
+        recommendationPlaceHolder(displayRecommendation, data.friends);
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   const submitReview = async () => {
