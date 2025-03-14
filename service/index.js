@@ -85,11 +85,6 @@ apiRouter.get('/user/friends', verifyAuth, async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// Get Reviews
-apiRouter.get('/reviews', verifyAuth, (_req, res) => {
-  res.send(reviews);
-});
-
 // Get users for friends selection
 apiRouter.get('/users', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -110,7 +105,7 @@ apiRouter.post('/user/readbooks', verifyAuth, async (req, res) => {
       user.readBooks = [];
     }
 
-    if (!user.readBooks.some(b => b.title === boook.title)) {
+    if (!user.readBooks.some(b => b.title === book.title)) {
       user.readBooks.push(book);
     }
     res.send(user.readBooks);
@@ -136,18 +131,31 @@ apiRouter.post('/user/wishbooks', verifyAuth, async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// remove a book from one of the lists
-apiRouter.delete('user/books', verifyAuth, async (req, res) => {
+// remove a book from readbooks
+apiRouter.delete('/user/readbooks', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    const { book, list } = req.body;
-    const targetList = user[list];
-    if (targetList) {
-      user[list] = targetList.filter(b => b.title !== book.title);
-      res.send(user[list]);
-    } else {
-      res.status(400).send({ msg: 'List does not exist' });
+    const { book } = req.body;
+    if (!user.readBooks) {
+      user.readBooks = [];
     }
+    user.readBooks = user.readBooks.filter(b => b.title !== book.title);
+    res.send(user.readBooks)
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+//remove book from wishbooks
+apiRouter.delete('/user/wishbooks', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    const { book } = req.body;
+    if (!user.wishBooks) {
+      user.wishBooks = [];
+    }
+    user.wishBooks = user.wishBooks.filter(b => b.title !== book.title);
+    res.send(user.wishBooks)
     return;
   }
   res.status(401).send({ msg: 'Unauthorized' });
@@ -170,16 +178,20 @@ apiRouter.delete('/user/friends', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     const { friend } = req.body;
-    user.friends = user.friends.filter(f => f.name !== friend.name);
+    user.friends = user.friends.filter(f => f.username !== friend.username);
     res.send(user.friends);
     return;
   }
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// Submit Reviews
-apiRouter.post('/review', verifyAuth, (req, res) => {
+// Submit Review
+apiRouter.post('/reviews', verifyAuth, (req, res) => {
   const { user, book, review } = req.body;
+  if (!user || !book || !review) {
+    return res.status(400).send({ msg: 'Missing required fields: user, book, and review are required' });
+  }
+  
   let found = false;
 
   for (const [i, prevReview] of reviews.entries()) {
@@ -194,7 +206,17 @@ apiRouter.post('/review', verifyAuth, (req, res) => {
     reviews.push({ user, book, review });
   }
 
-  res.send(reviews);
+  res.send({ reviews });
+});
+
+// Get reviews for readbooks and friend recommendations
+apiRouter.get('/reviews', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    res.send(reviews);
+    return
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
 });
 
 // Default Error Handler

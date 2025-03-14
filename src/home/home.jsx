@@ -105,25 +105,8 @@ export function Home() {
     return users.filter(user => user.username.toLowerCase().includes(searchTerm.toLowerCase()));
   }
 
-  const addBook = async (book, list) => {
-    try {
-      const response = await fetch(`/api/user/${list}books`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ book }),
-        credentials: 'include',
-      });
-      if (!response.ok) throw new Error('Failed to add book');
-      const updatedBooks = await response.json();
-      if (list === 'read') {
-        setReadBooks(updatedBooks);
-      } else {
-        setWishBooks(updatedBooks);
-      }
-      setShowModal(false);
-    } catch (err) {
-      console.error('Error adding book:', err);
-    }
+  const addBook =  () => {
+    setShowModal(false);
   };
 
   const addFriend = async (friend) => {
@@ -168,6 +151,24 @@ export function Home() {
     setRecommendedBook(`${recommendation.from} recommends ${recommendation.booktitle}`)
   };
 
+  const clearBooks = async () => {
+    try {
+      const response = await fetch(`/api/user/clearBooks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to clear books');
+      }
+      // Reset the local state after clearing books
+      setReadBooks([]);
+      setWishBooks([]);
+    } catch (err) {
+      console.error('Error clearing books:', err);
+    }
+  };
 
   return (
     <form id="homeform">
@@ -211,6 +212,7 @@ export function Home() {
         <br></br>
 
         <section>
+        <Button variant='primary' className="me-1" onClick={clearBooks}>Clear All Books</Button>
         <Button variant='primary' className="me-1" onClick={removeFriendPopUp}>Remove A Friend</Button>
         </section>
 
@@ -242,11 +244,11 @@ export function Home() {
                   {book.coverImage ? (
                     <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.coverImage }}>
                     {/* removed classname */}
-                      <img alt={`book-${index}`} src={book.coverImage} width="150" onClick={() => addBook(book, 'read')} />
+                      <img alt={`book-${index}`} src={book.coverImage} width="150" onClick={() => addBook()} />
                     </Link>
                   ) : (
                     <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.coverImage }}>
-                      <img alt="NoCoverPlaceHolder" src="/BookPlaceHolder.png" width="150" onClick={() => addBook(book, 'wish')} />
+                      <img alt="NoCoverPlaceHolder" src="/BookPlaceHolder.png" width="150" onClick={() => addBook()} />
                     </Link>
                   )}
                   <p>{book.title}</p>

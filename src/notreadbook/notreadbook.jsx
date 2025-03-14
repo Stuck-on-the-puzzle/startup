@@ -26,9 +26,11 @@ export function NotReadBook() {
         }
         const data = await response.json();
         setUserName(data.username)
-        const friendList = data.friends;
-        const readBooks = data.readBooks;
-        const wishBooks = data.wishBooks;
+        const friendList = data.friends || [];
+        const readBooks = data.readBooks || [];
+        console.log('readBooks:', readBooks)
+        const wishBooks = data.wishBooks || [];
+        console.log('wishBooks:', wishBooks)
         const friendsWhoReadBook = friendList.filter(friend => friend.books.some(book => book.title === bookTitle));
         setFriends(friendsWhoReadBook)
 
@@ -52,58 +54,39 @@ export function NotReadBook() {
     setBookStatus(selectedStatus);
   };
 
-  const addBook = (list, book) => {
-    const books = JSON.parse(localStorage.getItem(list)) || [];
-    const bookInList = books.some(b => b.title === book.title);
-    if (!bookInList) {
-      books.push(book);
-      localStorage.setItem(list, JSON.stringify(books));
-    }
-  };
-
-  const removeBook = (list, bookTitle) => {
-    const books = JSON.parse(localStorage.getItem(list)) || [];
-    const updatedList = books.filter(book => book.title !== bookTitle);
-    localStorage.setItem(list, JSON.stringify(updatedList));
-  };
-
   const submitBookStatus = async () => {
     const book = { title: bookTitle, image: bookCover };
 
     try {
-      await fetch(`/api/user/books`, {
+      const endpoint = bookStatus === 'readbook' ? `/api/user/readbooks` : `/api/user/wishbooks`;
+      await fetch(`/api/user/readbooks`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ book, list: 'readBooks' }),
+        credentials: 'include',
       });
-
-      await fetch(`/api/user/books`, {
+      await fetch(`/api/user/wishbooks`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify({ book, list: 'wishBooks' }),
+        body: JSON.stringify({ book, list: 'readBooks' }),
+        credentials: 'include',
       });
-
-      await fetch(`/api/user/books`, {
-        method: 'DELETE',
+      const response = await fetch(endpoint, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify({ book })
+        body: JSON.stringify({ book }),
       });
 
-      if (bookStatus === 'readbook') {
-        await fetch(`/api/user/readbooks`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', },
-          body: JSON.stringify({ book }),
-        });
-      } else if (bookStatus === 'addwishlist') {
-        await fetch(`/api/user/wishbooks`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', },
-          body: JSON.stringify({ book }),
-        });
-      }
+      if (!response.ok) throw new Error('failed to submit book');
 
       const review = '';
+      await fetch(`/api/review`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userName, book, review }),
+        credentials: 'include',
+      });
+
       localStorage.setItem(`${bookTitle}_review`, review);
     } catch (err) {
       console.error('Error updating book status:', err);

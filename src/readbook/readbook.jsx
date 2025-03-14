@@ -26,29 +26,48 @@ export function ReadBook() {
         const data = await response.json();
         setUserName(data.username)
         setFriends(data.friends || []);
-        recommendationPlaceHolder(displayRecommendation, data.friends);
       } catch (err) {
         console.error('Error fetching user data:', err);
       }
     };
 
+    const fetchReviewForBook = async () => {
+      const response = await fetch(`/api/reviews`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      });
+      const reviews = await response.json();
+      const userReview = reviews.find(
+        (review) => review.user === userName && review.book === bookTitle
+      );
+  
+      setReview(userReview ? userReview.review : '');
+    }
+
     fetchUserData();
+    fetchReviewForBook();
   }, []);
 
   const submitReview = async () => {
     const newReview = { user: userName, book: bookTitle, review: bookReview };
 
     try {
-      const response = await fetch('api/review', {
+      const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newReview),
+        credentials: 'include',
       });
 
       if (response.ok) {
+        const data = await response.json();
+        const updatedReview = data.reviews.find(
+          (review) => review.user === userName && review.book === bookTitle
+        )
+        setReview(updatedReview ? updatedReview.review : '');
         console.log("Review Submitted!");
-      }
-      else {
+      } else {
       const errorData = await response.json();
       console.error("Error:", errorData);
       }
@@ -66,28 +85,6 @@ export function ReadBook() {
     //PLACEHOLDER FOR SENDING RECCOMENDATIONS MAYBE DELETE WHO KNOWS
   }
 
-  const fetchUserProfile = async () => {
-    const response = await fetch(`/api/user/profile`);
-    const data = await response.json();
-    setUserName(data.username);
-  };
-
-  const fetchFreindList = async () => {
-    const response = await fetch(`/api/user/friends`);
-    const data = await response.json();
-    setFriends(data);
-  }
-
-  const fetchReviewForBook = async () => {
-    const response = await fetch(`/api/reviews`);
-    const reviews = await response.json();
-    const userReview = reviews.find(
-      (review) => review.user === userName && review.book === bookTitle
-    );
-
-    setReview(userReview ? userReview.review : '');
-  }
-
   return (
     <form>
     <main>
@@ -97,7 +94,7 @@ export function ReadBook() {
         
         <section>
           <div className="form-group">
-            <label for="review" className="reviewlabel">Review: </label>
+            <label for="review" className="reviewlabel">Review:</label>
             <textarea className="form-control bg-primary text-light" style={{ height: '100px' }} placeholder="Write Your Review Here!" 
             id="review" name="review" value={bookReview} onChange={(e) => setReview(e.target.value)}></textarea>         
           </div>
