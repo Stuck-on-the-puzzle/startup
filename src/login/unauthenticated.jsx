@@ -17,9 +17,10 @@ export function Unauthenticated(props) {
 
     async function loginOrCreate(endpoint) {
         const response = await fetch(endpoint, {
-            method: 'POST',
+            method: 'post',
             body: JSON.stringify({ username: userName, password: password}),
             headers: { 'Content-Type': 'application/json; charset=UTF-8', },
+            credentials: 'include',
         });
         if (response?.status === 200) {
             localStorage.setItem('userName', userName);
@@ -35,11 +36,11 @@ export function Unauthenticated(props) {
             <div>
                 <div className='input-group mb-3'>
                     <span className='input-group-text'>UserName:</span>
-                    <input className='form-control' type='text' value={userName} onChange={(e) => setUserName(e.target.value)} placeholder='Enter Username Here' required pattern="[^[^\s]*$" />
+                    <input className='form-control' type='text' value={userName} onChange={(e) => setUserName(e.target.value)} placeholder='Enter Username Here' />
                 </div>
                 <div className='input-group mb-3'>
                     <span className='input-group-text'>Password:</span>
-                    <input className='form-control' type='password' onChange={(e) => setPassword(e.target.value)} placeholder="Enter Password Here" required pattern='[^[^\s]*$' />
+                    <input className='form-control' type='password' onChange={(e) => setPassword(e.target.value)} placeholder="Enter Password Here" />
                 </div>
                 <Button variant='primary' onClick={() => loginUser()} disabled={!userName || !password}>
                     Login

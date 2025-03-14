@@ -22,35 +22,34 @@ export function Home() {
   const [friendsToSelect, setFriendsToSelect] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showFriendModal, setShowFriendModal] = React.useState(false);
-
   const [removeFriendModal, setRemoveFriendModal] = React.useState(false);
   const [recommendedBook, setRecommendedBook] = React.useState('');
   const [searchTerm, setSearchTerm] = React.useState('');
   const [bookDatabase, setBookDatabase] = React.useState([]);
 
   React.useEffect(() => {
-    const profileName = localStorage.getItem('userName');
-    setUserName(profileName);
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`/api/user/profile`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const data = await response.json();
+        setUserName(data.username)
+        setReadBooks(data.readBooks || []);
+        setWishBooks(data.wishBooks || []);
+        setFriends(data.friends || []);
+        recommendationPlaceHolder(displayRecommendation, data.friends);
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+      }
+    };
 
-    const readBookList = JSON.parse(localStorage.getItem('readBooks')) || [];
-    const wishBookList = JSON.parse(localStorage.getItem('wishBooks')) || [];
-    const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
-
-    setReadBooks(readBookList);
-    setWishBooks(wishBookList);
-    setFriends(friendList);
-
-    recommendationPlaceHolder(displayRecommendation, friendList);
+    fetchUserData();
   }, []);
-
-  const clearLocalStorage = () => {
-    localStorage.removeItem('readBooks');
-    localStorage.removeItem('wishBooks');
-    localStorage.removeItem('notReadBooks');
-
-    setReadBooks([]);
-    setWishBooks([]);
-  };
 
   const searching = (event) => {
     setSearchTerm(event.target.value);
@@ -77,64 +76,92 @@ export function Home() {
   };
 
   const bookSelection = () => {
-    // THIS IS THE DATABASE PLACEHOLDER COMMENTED OUT BECAUSE REPLACED BY THIRDPARTY API
-    // const booksDatabase = [
-    //   { title: 'PlaceHolderBook1', image: "BookPlaceHolder.png"},
-    //   { title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png"} ];
-
-    // const allBooks = [...readBooks, ...wishBooks];
-
-    // const selectableBooks = booksDatabase.filter(book => {
-    //   return !allBooks.some(b => b.title === book.title);
-    // });
-
-    // selectableBooks.forEach(book => {
-    //   setBooksToSelect(prevBooks => [...prevBooks, book])
-    // });
     setShowModal(true);
   };
 
-  const friendSelection = () => {
+  const friendSelection = async () => {
+    console.log('Friend Selection CLicked!')
     setFriendsToSelect([]); // Resets friend selection
+    try {
+      const response = await fetch(`/api/users`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error('Failed to Find Friends to Add');
+      const allUsers = await response.json();
+      const selectableFriends = allUsers.filter(user => {
+        return !friends.some(existingFriend => existingFriend.username === user.username);
+      });
 
-    // THIS IS THE USER LIST PLACE HOLDER MAY NEED TO ADD WISHLIST BOOKS SO THAT DATA STRUCTURE MATCHES USERNAME AND OTHER USERS
-    const userListPlaceholder = [
-      { name: 'John', books: [{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png", review: 'PlaceHolderBook2 was great!'}]},
-      { name: 'Rose', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png", review: 'I thought PlaceHolderBook1 was too boring'}] },
-      { name: 'Charles', books: [] },
-      { name: 'Emilee', books: [{ title: 'PlaceHolderBook1', image: "BookPlaceHolder.png", review: 'I really enjoyed reading PlaceHolderBook1'},{ title: 'PlaceHolderBook2', image: "BookPlaceHolderTwo.png", review: 'I thought PlaceHolderBook2 was a little bland'}]}
-      ]
-
-    const selectableFriends = userListPlaceholder.filter(friend => {
-      return !friends.some(existingFriend => existingFriend.name === friend.name);
-    });
-
-    selectableFriends.forEach(friend => {
-      setFriendsToSelect(prevFriends => [...prevFriends, friend])
-    });
-    setShowFriendModal(true)
+      setFriendsToSelect(selectableFriends);
+      setShowFriendModal(true);
+    } catch (error) {
+      console.error('Error Finding Friends to Add:', error);
+    }
   };
 
-  const addBook = () => {
-    setShowModal(false);
+  const filterFriends = (users) => {
+    if (!searchTerm) return users;
+    return users.filter(user => user.username.toLowerCase().includes(searchTerm.toLowerCase()));
+  }
+
+  const addBook = async (book, list) => {
+    try {
+      const response = await fetch(`/api/user/${list}books`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ book }),
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error('Failed to add book');
+      const updatedBooks = await response.json();
+      if (list === 'read') {
+        setReadBooks(updatedBooks);
+      } else {
+        setWishBooks(updatedBooks);
+      }
+      setShowModal(false);
+    } catch (err) {
+      console.error('Error adding book:', err);
+    }
   };
 
-  const addFriend = (friend) => {
-    const updatedFriends = [...friends, friend];
-    localStorage.setItem('friendList', JSON.stringify(updatedFriends));
-    setFriends(prevFriends => [...prevFriends, friend]);
-    setShowFriendModal(false);
+  const addFriend = async (friend) => {
+    try {
+      const response = await fetch(`/api/user/friends`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ friend: {username: friend.username } }),
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error('Failed to add friend');
+      const updatedFriends = await response.json();
+      setFriends(updatedFriends);
+      setShowFriendModal(false);
+    } catch (err) {
+      console.error('Error adding friend:', err);
+    }
   };
 
   const removeFriendPopUp = () => {
     setRemoveFriendModal(true);
   };
 
-  const removeFriend = (friend) => {
-    const updatedFriends = friends.filter(findfriend => findfriend.name !== friend.name);
-    localStorage.setItem('friendList', JSON.stringify(updatedFriends));
-    setFriends(updatedFriends);
-    setRemoveFriendModal(false);
+  const removeFriend = async (friend) => {
+    try {
+      const response = await fetch(`/api/user/friends`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ friend }),
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error('Failed to remove friend');
+      const updatedFriends = await response.json();
+      setFriends(updatedFriends);
+      setRemoveFriendModal(false);
+    } catch (error) {
+      console.error('Error removing friend:', error);
+    }
   };
 
   const displayRecommendation = (recommendation) => {
@@ -184,7 +211,6 @@ export function Home() {
         <br></br>
 
         <section>
-        <Button variant='primary' className="me-1" onClick={clearLocalStorage}>Clear Books</Button>
         <Button variant='primary' className="me-1" onClick={removeFriendPopUp}>Remove A Friend</Button>
         </section>
 
@@ -192,7 +218,7 @@ export function Home() {
           <h2>Friends:</h2>
           <div className="friend-container">
             {friends.map((friend, index) => (
-              <div key={index} className="friendbubble">{friend.name}</div>
+              <div key={index} className="friendbubble">{friend.username}</div>
             ))}
             <img alt="plusSymbol" src="plus.png" width="50" className="imgformat" onClick={friendSelection}/>
           </div>
@@ -216,11 +242,11 @@ export function Home() {
                   {book.coverImage ? (
                     <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.coverImage }}>
                     {/* removed classname */}
-                      <img alt={`book-${index}`} src={book.coverImage} width="150" onClick={() => addBook()} />
+                      <img alt={`book-${index}`} src={book.coverImage} width="150" onClick={() => addBook(book, 'read')} />
                     </Link>
                   ) : (
                     <Link to="/notreadbook" state={{ bookTitle: book.title, bookCover: book.coverImage }}>
-                      <img alt="NoCoverPlaceHolder" src="/BookPlaceHolder.png" width="150" onClick={() => addBook()} />
+                      <img alt="NoCoverPlaceHolder" src="/BookPlaceHolder.png" width="150" onClick={() => addBook(book, 'wish')} />
                     </Link>
                   )}
                   <p>{book.title}</p>
@@ -236,12 +262,14 @@ export function Home() {
       </Modal.Header>
       <Modal.Body>
         <div className="friend-selection">
+          <input type="text" value={searchTerm} onChange={searching} onKeyDown={enterButtonSearch}
+          placeholder="Search For Friend by Username" />
           {friendsToSelect.length === 0 ? (
-            <p>No Friends Left To Add...</p>
+            <p>No Friends To Add...</p>
           ) : (
-            friendsToSelect.map((friend, index) => (
+            filterFriends(friendsToSelect).map((friend, index) => (
               <div key={index}>
-                <p onClick={() => addFriend(friend)}>{friend.name}</p>
+                <p onClick={() => addFriend(friend)}>{friend.username}</p>
               </div>
             )))}
         </div>

@@ -9,6 +9,7 @@ export function Authenticated(props) {
     function logout() {
         fetch(`/api/auth/logout`, {
             method: 'delete',
+            credentials: 'include',
         })
         .catch(() => {
             // Failed Logout

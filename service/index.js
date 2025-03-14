@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-const authCookieName = 'authToken'; ////CHECK THIS PLEASE
+const authCookieName = 'authToken';
 
 // Memory Data Structures
 let users = [];
@@ -90,6 +90,16 @@ apiRouter.get('/reviews', verifyAuth, (_req, res) => {
   res.send(reviews);
 });
 
+// Get users for friends selection
+apiRouter.get('/users', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    const allUsers = users.filter(u => u.username !== user.username)
+    res.send(allUsers);
+    return
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
 
 // Add book to read books
 apiRouter.post('/user/readbooks', verifyAuth, async (req, res) => {
@@ -134,7 +144,7 @@ apiRouter.post('/user/friends', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     const { friend } = req.body;
-    user.friends.push(friend);
+    user.friends.push({ username: friend.username });
     res.send(user.friends);
     return;
   }
@@ -180,7 +190,7 @@ app.use(function (err, req, res, next) {
 
 // Return the application's default page if path is unknown
 app.use((_req, res) => {
-  res.sendFile('index.html', { root: 'public' });
+  res.sendFile('login.jsx', { root: 'src' });
 });
 
 // Helper Functions!!
