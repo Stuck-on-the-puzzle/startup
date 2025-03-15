@@ -26,6 +26,7 @@ export function Home() {
   const [recommendedBook, setRecommendedBook] = React.useState('');
   const [searchTerm, setSearchTerm] = React.useState('');
   const [bookDatabase, setBookDatabase] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     const fetchUserData = async () => {
@@ -63,6 +64,7 @@ export function Home() {
 
   const searchBooks = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`https://openlibrary.org/search.json?title=${searchTerm}`);
       const data = await response.json();
       const books = data.docs.map((book) => ({
@@ -72,6 +74,8 @@ export function Home() {
       setBookDatabase(books);
     } catch (error) {
       console.error('Error Fetching Books:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -236,7 +240,9 @@ export function Home() {
           <div className="book-selection">
             <input type="text" value={searchTerm} onChange={searching} onKeyDown={enterButtonSearch} placeholder="Search For Book by Title" />
             <Button variant="primary" onClick={searchBooks}>Search</Button>
-            {bookDatabase.length === 0 ? (
+            {loading ? ( <p>Loading...</p>
+            ) :
+            bookDatabase.length === 0 ? (
               <p>No Books Found</p>
             ) : (
               bookDatabase.map((book,index) => (
@@ -289,7 +295,7 @@ export function Home() {
           ) : (
             friends.map((friend, index) => (
               <div key={index}>
-                <p onClick={() => removeFriend(friend)}>{friend.name}</p>
+                <p onClick={() => removeFriend(friend)}>{friend.username}</p>
               </div>
             )))}
         </div>

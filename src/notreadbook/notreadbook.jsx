@@ -25,14 +25,9 @@ export function NotReadBook() {
           throw new Error('Failed to fetch user data');
         }
         const data = await response.json();
-        setUserName(data.username)
-        const friendList = data.friends || [];
+        setUserName(data.username);
         const readBooks = data.readBooks || [];
-        console.log('readBooks:', readBooks)
         const wishBooks = data.wishBooks || [];
-        console.log('wishBooks:', wishBooks)
-        const friendsWhoReadBook = friendList.filter(friend => friend.books.some(book => book.title === bookTitle));
-        setFriends(friendsWhoReadBook)
 
         if (readBooks.some(book => book.title === bookTitle))   {
           setBookStatus('readbook');
@@ -46,7 +41,25 @@ export function NotReadBook() {
       }
     };
 
-    fetchUserData();   
+    const fetchFriendData = async () => {
+      try {
+        const response = await fetch(`/api/user/friendbooks`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const data = await response.json();
+        setFriends(data);
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+      }
+    };
+
+
+    fetchUserData();
+    fetchFriendData();
   }, []);
 
   const changeBookStatus = (e) => {
@@ -58,7 +71,6 @@ export function NotReadBook() {
     const book = { title: bookTitle, image: bookCover };
 
     try {
-      const endpoint = bookStatus === 'readbook' ? `/api/user/readbooks` : `/api/user/wishbooks`;
       await fetch(`/api/user/readbooks`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', },
@@ -71,27 +83,34 @@ export function NotReadBook() {
         body: JSON.stringify({ book, list: 'readBooks' }),
         credentials: 'include',
       });
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify({ book }),
-      });
 
-      if (!response.ok) throw new Error('failed to submit book');
+      if (bookStatus === 'readbook') {
+        await fetch(`/api/user/readbooks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', },
+          body: JSON.stringify({ book }),
+          credentials: 'include',
+        });
+      } else if (bookStatus === 'addwishlist') {
+        await fetch(`/api/user/wishbooks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', },
+          body: JSON.stringify({ book }),
+          credentials: 'include',
+        });
+      }
 
       const review = '';
-      await fetch(`/api/review`, {
+      await fetch(`/api/user/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userName, book, review }),
+        body: JSON.stringify({ userName, bookTitle, review }),
         credentials: 'include',
       });
 
-      localStorage.setItem(`${bookTitle}_review`, review);
     } catch (err) {
       console.error('Error updating book status:', err);
     }
-
   };
 
   const submitButtonNav = () => {
@@ -104,7 +123,8 @@ export function NotReadBook() {
   };
 
   const seeReview = (friend) => {
-    const friendReview = friend.books.find(book => book.title === bookTitle)?.review;
+    const friendReadBooks = friend.readBooks || [];
+    const friendReview = friendReadBooks.find(book => book.title === bookTitle)?.review;
     setSelectedReview(friendReview || "No Review Available.");
     setReviewModal(true);
   }
@@ -158,7 +178,7 @@ export function NotReadBook() {
                 <p>No Friends Have Read This Book</p>
               ) : (
                 friends.map((friend, index) => (
-                  <div key={index} className="friendbubble" onClick={() => seeReview(friend)}>{friend.name}</div>
+                  <div key={index} className="friendbubble" onClick={() => seeReview(friend)}>{friend.username}</div>
                 ))
               )}
             </div>

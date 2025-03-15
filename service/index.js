@@ -64,7 +64,7 @@ const verifyAuth = async (req, res, next) => {
   }
 };
 
-// Get user Profile Info (user, friends, readbooks, wishlistbooks)
+// Get user Profile Info (user, friends, readbooks, wishlistbooks, reviews)
 apiRouter.get('/user/profile', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
@@ -113,7 +113,7 @@ apiRouter.post('/user/readbooks', verifyAuth, async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// Add book to wishlist
+// add book to wishlist
 apiRouter.post('/user/wishbooks', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
@@ -190,7 +190,7 @@ apiRouter.post('/user/reviews', verifyAuth, async (req, res) => {
   if (user) {
     const { username, bookTitle, review } = req.body;
     if (!user.reviews) {
-      user.reveiws = [];
+      user.reviews = [];
     }
     const existingReview = user.reviews.findIndex(r => r.bookTitle === bookTitle);
     if (existingReview >= 0) {
