@@ -9,7 +9,6 @@ const authCookieName = 'authToken';
 
 // Memory Data Structures
 let users = [];
-let reviews = [];
 
 app.use(express.json());
 
@@ -69,7 +68,7 @@ const verifyAuth = async (req, res, next) => {
 apiRouter.get('/user/profile', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    res.send({ username: user.username, readBooks: user.readBooks, wishBooks: user.wishBooks, friends: user.friends });
+    res.send({ username: user.username, readBooks: user.readBooks, wishBooks: user.wishBooks, friends: user.friends, reviews: user.reviews });
     return;
   }
   res.statusMessage(401).send({ msg: 'Unauthorized' });
@@ -146,7 +145,7 @@ apiRouter.delete('/user/readbooks', verifyAuth, async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-//remove book from wishbooks
+// remove book from wishbooks
 apiRouter.delete('/user/wishbooks', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
@@ -161,7 +160,7 @@ apiRouter.delete('/user/wishbooks', verifyAuth, async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// Add Freinds
+// add Freinds
 apiRouter.post('/user/friends', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
@@ -173,7 +172,7 @@ apiRouter.post('/user/friends', verifyAuth, async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// Remove Friends
+// remove Friends
 apiRouter.delete('/user/friends', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
@@ -185,48 +184,60 @@ apiRouter.delete('/user/friends', verifyAuth, async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// Submit Review
-apiRouter.post('/reviews', verifyAuth, (req, res) => {
-  const { user, book, review } = req.body;
-  if (!user || !book || !review) {
-    return res.status(400).send({ msg: 'Missing required fields: user, book, and review are required' });
-  }
-  
-  let found = false;
-
-  for (const [i, prevReview] of reviews.entries()) {
-    if (prevReview.user === user && prevReview.book === book) {
-      reviews[i].review = review;
-      found = true;
-      break;
-    }
-  }
-
-  if (!found) {
-    reviews.push({ user, book, review });
-  }
-
-  res.send({ reviews });
-});
-
-// Get reviews for readbooks and friend recommendations
-apiRouter.get('/reviews', verifyAuth, async (req, res) => {
+// submit Review
+apiRouter.post('/user/reviews', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    res.send(reviews);
-    return
+    const { username, bookTitle, review } = req.body;
+    if (!user.reviews) {
+      user.reveiws = [];
+    }
+    const existingReview = user.reviews.findIndex(r => r.bookTitle === bookTitle);
+    if (existingReview >= 0) {
+      user.reviews[existingReview].review = review;
+    } else {
+      const newReview = { username, bookTitle, review}
+      user.reviews.push(newReview)
+    }
+    res.send(user.reviews);
+    return;
+    }
+    res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// get User Review
+apiRouter.get('/user/reviews', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    if (user.reviews && user.reviews.length > 0) {
+      res.send(user.reviews); 
+    } else {
+      res.send([]);
+    }
+    return;
   }
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// Default Error Handler
+// get reviews of all users
+apiRouter.get('/reviews', verifyAuth, async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    const allReviews = users.flatMap(u => u.reviews || []);
+    res.send(allReviews);
+    return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// default Error Handler
 app.use(function (err, req, res, next) {
   res.status(500).send({ type: err.name, message: err.message });
 });
 
-// Return the application's default page if path is unknown
+// return the application's default page if path is unknown
 app.use((_req, res) => {
-  res.sendFile('login.jsx', { root: 'src' });
+  res.sendFile('index.html', { root: 'public' });
 });
 
 // Helper Functions!!
@@ -239,6 +250,7 @@ async function createUser(username, password) {
     password: passwordHash,
     token: uuid.v4(),
     friends: [],
+    reviews: [],
   };
   users.push(user);
 

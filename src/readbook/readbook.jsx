@@ -1,12 +1,13 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './readbook.css';
 
 export function ReadBook() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { bookTitle, bookCover} = location.state || {};
   const [ bookReview, setReview] = React.useState('');
   const [userName, setUserName] = React.useState('');
@@ -24,36 +25,25 @@ export function ReadBook() {
           throw new Error('Failed to fetch user data');
         }
         const data = await response.json();
-        setUserName(data.username)
+        setUserName(data.username);
         setFriends(data.friends || []);
+        const currentReview = data.reviews.find(
+          (review) => review.username === data.username && review.bookTitle === bookTitle
+        );
+        setReview(currentReview ? currentReview.review : '');
       } catch (err) {
         console.error('Error fetching user data:', err);
       }
     };
-
-    const fetchReviewForBook = async () => {
-      const response = await fetch(`/api/reviews`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
-      const reviews = await response.json();
-      const userReview = reviews.find(
-        (review) => review.user === userName && review.book === bookTitle
-      );
   
-      setReview(userReview ? userReview.review : '');
-    }
-
     fetchUserData();
-    fetchReviewForBook();
-  }, []);
+  }, []);  // Only runs once on mount
 
   const submitReview = async () => {
-    const newReview = { user: userName, book: bookTitle, review: bookReview };
+    const newReview = { username: userName, bookTitle: bookTitle, review: bookReview };
 
     try {
-      const response = await fetch('/api/reviews', {
+      const response = await fetch('/api/user/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newReview),
@@ -62,11 +52,12 @@ export function ReadBook() {
 
       if (response.ok) {
         const data = await response.json();
-        const updatedReview = data.reviews.find(
-          (review) => review.user === userName && review.book === bookTitle
+        const updatedReview = data.find(
+          (review) => review.username === userName && review.bookTitle === bookTitle
         )
         setReview(updatedReview ? updatedReview.review : '');
         console.log("Review Submitted!");
+        navigate('/home');
       } else {
       const errorData = await response.json();
       console.error("Error:", errorData);
@@ -81,7 +72,7 @@ export function ReadBook() {
   };
 
   const sendReccomendation = () => {
-    console.log(`Sending recommendation to ${friendName}`);
+    console.log(`Sending recommendation to ${friend.username}`);
     //PLACEHOLDER FOR SENDING RECCOMENDATIONS MAYBE DELETE WHO KNOWS
   }
 
@@ -94,7 +85,7 @@ export function ReadBook() {
         
         <section>
           <div className="form-group">
-            <label for="review" className="reviewlabel">Review:</label>
+            <label htmlFor="review" className="reviewlabel">Review:</label>
             <textarea className="form-control bg-primary text-light" style={{ height: '100px' }} placeholder="Write Your Review Here!" 
             id="review" name="review" value={bookReview} onChange={(e) => setReview(e.target.value)}></textarea>         
           </div>
@@ -103,7 +94,7 @@ export function ReadBook() {
         <br />
 
         <section>
-          <Link to="/home"><Button variant='primary' className="me-1" onClick={submitReview}>Submit!</Button></Link>
+          <Button variant='primary' className="me-1" onClick={submitReview}>Submit!</Button>
           <Button variant='primary' className="me-1" onClick={warningMessage}>Change Book Status?</Button>
         </section>
 

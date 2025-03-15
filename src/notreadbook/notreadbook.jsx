@@ -120,21 +120,21 @@ export function NotReadBook() {
             <h2>Book Status:</h2>
             <form id="notreadbookform">
             <div className="input-group">
-              <label for="bookread">
+              <label htmlFor="bookread">
               <div className="input-group-text">
-                <label for="bookread">I've Read This Book!</label>
+                <label htmlFor="bookread">I've Read This Book!</label>
                 <input className="form-check-input mt-0" type="radio" id="bookread" value="readbook" name="bookstatus" checked={bookStatus === 'readbook'} onChange={changeBookStatus}/>
               </div>
               </label>
-              <label for="addwishlist">
+              <label htmlFor="addwishlist">
               <div className="input-group-text">
-                <label for="addwishlist">I Want to Read This Book!</label>
+                <label htmlFor="addwishlist">I Want to Read This Book!</label>
                 <input className="form-check-input mt-0" type="radio" id="addwishlist" value="addwishlist" name="bookstatus" checked={bookStatus === 'addwishlist'} onChange={changeBookStatus}/>
               </div>
               </label>
-              <label for="booknotread">
+              <label htmlFor="booknotread">
               <div className="input-group-text">
-                <label for="booknotread">I Have Not Read This Book!</label>
+                <label htmlFor="booknotread">I Have Not Read This Book!</label>
                 <input className="form-check-input mt-0" type="radio" id="booknotread" value="booknotread" name="bookstatus" checked={bookStatus === 'booknotread'} onChange={changeBookStatus}/>
               </div>
               </label>
