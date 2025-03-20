@@ -26,6 +26,7 @@ export function NotReadBook() {
         }
         const data = await response.json();
         setUserName(data.username);
+        setFriends(data.friends)
         const readBooks = data.readBooks || [];
         const wishBooks = data.wishBooks || [];
 
@@ -41,25 +42,8 @@ export function NotReadBook() {
       }
     };
 
-    const fetchFriendData = async () => {
-      try {
-        const response = await fetch(`/api/user/friendbooks`, {
-          method: 'GET',
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-        const data = await response.json();
-        setFriends(data);
-      } catch (err) {
-        console.error('Error fetching user data:', err);
-      }
-    };
-
 
     fetchUserData();
-    fetchFriendData();
   }, []);
 
   const changeBookStatus = (e) => {
@@ -118,7 +102,7 @@ export function NotReadBook() {
     if (bookStatus === 'readbook') {
       navigate('/readbook', {state: { bookTitle: bookTitle, bookCover: bookCover }});
     } else {
-      navigate('/home');
+      navigate('/home', { replace: true });
     }
   };
 
@@ -130,7 +114,7 @@ export function NotReadBook() {
   }
 
   return (
-    <form>
+    <div>
     <main>
         <h2>{bookTitle}</h2>
         <p className="info">{userName}</p>
@@ -197,6 +181,6 @@ export function NotReadBook() {
       </Modal.Body>
     </Modal>
 
-    </form>
+    </div>
   );
 }

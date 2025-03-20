@@ -28,9 +28,10 @@ export function ReadBook() {
         setUserName(data.username);
         setFriends(data.friends || []);
         const currentReview = data.reviews.find(
-          (review) => review.username === data.username && review.bookTitle === bookTitle
+          (review) => review.bookTitle === bookTitle
         );
         setReview(currentReview ? currentReview.review : '');
+        console.log(currentReview.review)
       } catch (err) {
         console.error('Error fetching user data:', err);
       }
@@ -77,7 +78,7 @@ export function ReadBook() {
   }
 
   return (
-    <form>
+    <div>
     <main>
         <h2>{bookTitle}</h2>
         <p className="info">{userName}</p>
@@ -127,6 +128,6 @@ export function ReadBook() {
         </div>
       </Modal.Body>
     </Modal>
-    </form>
+    </div>
   );
 }

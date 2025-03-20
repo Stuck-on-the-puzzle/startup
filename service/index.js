@@ -68,7 +68,23 @@ const verifyAuth = async (req, res, next) => {
 apiRouter.get('/user/profile', verifyAuth, async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
-    res.send({ username: user.username, readBooks: user.readBooks, wishBooks: user.wishBooks, friends: user.friends, reviews: user.reviews });
+    const friendsWithReadBooks = await Promise.all(user.friends.map(async (friend) => {
+      const friendUser = await findUser('username', friend.username);
+      const friendBooksWithReviews = friendUser.readBooks.map((book) => {
+        const review = friendUser.reviews.find((r) => r.bookTitle === book.title);
+        return {
+          bookTitle: book.title,
+          review: review ? review.review : null,
+        };
+      });
+          
+      return {
+        username: friend.username,
+        readBooks: friendBooksWithReviews
+      };
+    }));
+
+    res.send({ username: user.username, readBooks: user.readBooks, wishBooks: user.wishBooks, friends: friendsWithReadBooks, reviews: user.reviews });
     return;
   }
   res.statusMessage(401).send({ msg: 'Unauthorized' });
