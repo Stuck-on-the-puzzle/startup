@@ -84,6 +84,8 @@ export function NotReadBook() {
         });
       }
 
+      window.location.reload();
+
       const review = '';
       await fetch(`/api/user/reviews`, {
         method: 'POST',
@@ -102,7 +104,7 @@ export function NotReadBook() {
     if (bookStatus === 'readbook') {
       navigate('/readbook', {state: { bookTitle: bookTitle, bookCover: bookCover }});
     } else {
-      navigate('/home', { replace: true });
+      navigate('/home');
     }
   };
 

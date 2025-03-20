@@ -1,6 +1,7 @@
 import React from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
@@ -15,6 +16,8 @@ const recommendationPlaceHolder = (displayRecommendation, friends) => {
 };
 
 export function Home() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [userName, setUserName] = React.useState('');
   const [readBooks, setReadBooks] = React.useState([]);
   const [wishBooks, setWishBooks] = React.useState([]);
