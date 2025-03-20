@@ -110,8 +110,8 @@ export function NotReadBook() {
 
   const seeReview = (friend) => {
     const friendReadBooks = friend.readBooks || [];
-    const friendReview = friendReadBooks.find(book => book.title === bookTitle)?.review;
-    setSelectedReview(friendReview || "No Review Available.");
+    const friendReview = friendReadBooks.find(book => book.bookTitle === bookTitle);
+    setSelectedReview(friendReview.review || "No Review Available.");
     setReviewModal(true);
   }
 

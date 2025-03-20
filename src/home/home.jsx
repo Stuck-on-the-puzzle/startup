@@ -46,6 +46,7 @@ export function Home() {
         setReadBooks(data.readBooks || []);
         setWishBooks(data.wishBooks || []);
         setFriends(data.friends || []);
+        console.log(data)
         // recommendationPlaceHolder(displayRecommendation, data.friends);
       } catch (err) {
         console.error('Error fetching user data:', err);
