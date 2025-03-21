@@ -102,11 +102,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
+- `[x]` **Node.js/Express HTTP service** - I used Node and express to implement my backend code
+- `[x]` **Static middleware for frontend** - I used Static middleware on my implementation
+- `[x]` **Calls to third party endpoints** - I used open library api for my third party. The code for this is in the home.jsx file in the searchBooks function.
+- `[x]` **Backend service endpoints** - I implemented backend service as can be seen in my index.js file
+- `[x]` **Frontend calls service endpoints** - I used my calls to the backend code to implement functionality in my website
 
 ## 🚀 DB/Login deliverable
 
