@@ -8,9 +8,10 @@ import Modal from 'react-bootstrap/Modal';
 const recommendationPlaceHolder = (displayRecommendation, friends) => {
   setInterval(() => {
     const randomFriend = friends[Math.floor(Math.random() * friends.length)];
-    if (randomFriend.books.length > 0) {
-      const randomBook = randomFriend.books[Math.floor(Math.random() * randomFriend.books.length)];
-      displayRecommendation({booktitle: randomBook.title, from: randomFriend.name });
+    console.log(randomFriend)
+    if (randomFriend.readBooks.length > 0) {
+      const randomBook = randomFriend.readBooks[Math.floor(Math.random() * randomFriend.readBooks.length)];
+      displayRecommendation({booktitle: randomBook.bookTitle, from: randomFriend.username });
     }
   }, 5000);
 };
@@ -47,7 +48,7 @@ export function Home() {
         setWishBooks(data.wishBooks || []);
         setFriends(data.friends || []);
         console.log(data)
-        // recommendationPlaceHolder(displayRecommendation, data.friends);
+        recommendationPlaceHolder(displayRecommendation, data.friends);
       } catch (err) {
         console.error('Error fetching user data:', err);
       }

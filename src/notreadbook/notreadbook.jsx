@@ -26,7 +26,9 @@ export function NotReadBook() {
         }
         const data = await response.json();
         setUserName(data.username);
-        setFriends(data.friends)
+        const friends = data.friends;
+        const friendsWhoReadBook = friends.filter(friend => friend.readBooks.some(book => book.bookTitle === bookTitle))
+        setFriends(friendsWhoReadBook);
         const readBooks = data.readBooks || [];
         const wishBooks = data.wishBooks || [];
 
