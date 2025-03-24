@@ -38,7 +38,7 @@ export function ReadBook() {
     };
   
     fetchUserData();
-  }, []);  // Only runs once on mount
+  }, []); 
 
   const submitReview = async () => {
     const newReview = { username: userName, bookTitle: bookTitle, review: bookReview };
@@ -72,7 +72,7 @@ export function ReadBook() {
     setShowModal(true);
   };
 
-  const sendReccomendation = () => {
+  const sendReccomendation = () => { /////////////////////// WILL NEED TO IMPLEMENT THIS!
     console.log(`Sending recommendation to ${friend.username}`);
     //PLACEHOLDER FOR SENDING RECCOMENDATIONS MAYBE DELETE WHO KNOWS
   }
