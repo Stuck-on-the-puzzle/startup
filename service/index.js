@@ -133,14 +133,15 @@ apiRouter.post('/user/wishbooks', verifyAuth, async (req, res) => {
 
 // remove a book from readbooks
 apiRouter.delete('/user/readbooks', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
   if (user) {
     const { book } = req.body;
     if (!user.readBooks) {
       user.readBooks = [];
     }
     user.readBooks = user.readBooks.filter(b => b.title !== book.title);
-    res.send(user.readBooks)
+    await DB.updateUser(user);
+    res.send(user.readBooks);
     return;
   }
   res.status(401).send({ msg: 'Unauthorized' });
@@ -148,36 +149,16 @@ apiRouter.delete('/user/readbooks', verifyAuth, async (req, res) => {
 
 // remove book from wishbooks
 apiRouter.delete('/user/wishbooks', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
   if (user) {
     const { book } = req.body;
     if (!user.wishBooks) {
       user.wishBooks = [];
     }
     user.wishBooks = user.wishBooks.filter(b => b.title !== book.title);
-    res.send(user.wishBooks)
+    await DB.updateUser(user);
+    res.send(user.wishBooks);
     return;
-  }
-  res.status(401).send({ msg: 'Unauthorized' });
-});
-
-// Get user friends
-apiRouter.get('/user/friends', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    res.send(user.friends);
-    return
-  }
-  res.status(401).send({ msg: 'Unauthorized' });
-});
-
-// Get users for friends selection
-apiRouter.get('/users', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    const allUsers = users.filter(u => u.username !== user.username)
-    res.send(allUsers);
-    return
   }
   res.status(401).send({ msg: 'Unauthorized' });
 });
@@ -210,7 +191,7 @@ apiRouter.delete('/user/friends', verifyAuth, async (req, res) => {
 
 // submit Review
 apiRouter.post('/user/reviews', verifyAuth, async (req, res) => {
-  const user = await DB.getUserByToken('token', req.cookies[authCookieName]);
+  const user = await DB.getUserByToken( req.cookies[authCookieName]);
   if (user) {
     const { username, bookTitle, review } = req.body;
     if (!user.reviews) {
@@ -228,31 +209,6 @@ apiRouter.post('/user/reviews', verifyAuth, async (req, res) => {
     return;
     }
     res.status(401).send({ msg: 'Unauthorized' });
-});
-
-// get User Review
-apiRouter.get('/user/reviews', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    if (user.reviews && user.reviews.length > 0) {
-      res.send(user.reviews); 
-    } else {
-      res.send([]);
-    }
-    return;
-  }
-  res.status(401).send({ msg: 'Unauthorized' });
-});
-
-// get reviews of all users
-apiRouter.get('/reviews', verifyAuth, async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    const allReviews = users.flatMap(u => u.reviews || []);
-    res.send(allReviews);
-    return;
-  }
-  res.status(401).send({ msg: 'Unauthorized' });
 });
 
 // default Error Handler
@@ -279,7 +235,7 @@ async function createUser(username, password) {
     friends: [],
     reviews: [],
   };
-  
+
   await DB.addUser(user);
   return user;
 }
