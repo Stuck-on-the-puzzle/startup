@@ -34,6 +34,11 @@ async function updateUser(user) {
   await userCollection.updateOne({ username: user.username }, { $set: user });
 }
 
+async function getAllUsers() {
+    const users = await userCollection.find().toArray();
+    return users;
+  }
+
 // book functions
 async function updateReadBook() {
     await userCollection.updateOne(
@@ -52,14 +57,14 @@ async function updateWishBook() {
 async function removeReadBook(username, book) {
     await userCollection.updateOne(
         { username: username },
-        { $pull: { readBook: { title: book.title } } }
+        { $pull: { readBooks: { title: book.title } } }
     );
 }
 
 async function removeWishBook(username, book) {
     await userCollection.updateOne(
         { username: username },
-        { $pull: { wishBook: { title: book.title } } }
+        { $pull: { wishBooks: { title: book.title } } }
     );
 }
 
@@ -90,6 +95,7 @@ module.exports = {
   getUserByToken,
   addUser,
   updateUser,
+  getAllUsers,
   updateReadBook,
   updateWishBook,
   removeReadBook,

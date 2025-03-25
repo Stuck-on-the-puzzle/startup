@@ -178,13 +178,35 @@ apiRouter.post('/user/friends', verifyAuth, async (req, res) => {
 
 // remove Friends
 apiRouter.delete('/user/friends', verifyAuth, async (req, res) => {
-  const user = await DB.getUserByToken('token', req.cookies[authCookieName]);
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
   if (user) {
     const { friend } = req.body;
     user.friends = user.friends.filter(f => f.username !== friend.username);
     await DB.updateUser(user)
     res.send(user.friends);
     return;
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// Get user friends
+apiRouter.get('/user/friends', verifyAuth, async (req, res) => {
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
+  if (user) {
+    res.send(user.friends);
+    return
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// Get users for friends selection
+apiRouter.get('/users', verifyAuth, async (req, res) => {
+  const user = await DB.getUserByToken(req.cookies[authCookieName]);
+  if (user) {
+    const allUsers = await DB.getAllUsers();
+    const filteredUsers = allUsers.filter(u => u.useranme !== user.username);
+    res.send(filteredUsers);
+    return
   }
   res.status(401).send({ msg: 'Unauthorized' });
 });

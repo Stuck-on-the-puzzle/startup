@@ -73,9 +73,31 @@ export function ReadBook() {
   };
 
   const sendReccomendation = () => { /////////////////////// WILL NEED TO IMPLEMENT THIS!
-    console.log(`Sending recommendation to ${friend.username}`);
-    //PLACEHOLDER FOR SENDING RECCOMENDATIONS MAYBE DELETE WHO KNOWS
+    console.log(`Sending recommendation to ${friends.username}`);
+    //PLACEHOLDER FOR SENDING RECCOMENDATIONS
   }
+
+  const removeBookFromReadBooksList = async () => {
+    try {
+      const response = await fetch('/api/user/readbooks', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ book: {title: bookTitle, cover: bookCover } }),
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        console.log("Book removed from readBooks");
+        navigate('/home');
+      } else {
+        const errorData = await response.json();
+        console.error("Error:", errorData);
+      }
+    } catch (error) {
+      console.error("Error removing book from readBooks:", error);
+    }
+    setShowModal(false);
+  };
 
   return (
     <div>
@@ -123,7 +145,7 @@ export function ReadBook() {
         <div className="warning-message">
           <h3>Changing This Books Status Will Permanently Delete Your Review</h3>
           <p>Do You Want to Continue?</p>
-          <Link to="/notreadbook" state={{ bookTitle: bookTitle, bookCover: bookCover}}><Button variant='primary' className="me-1">Yes, Change Book Status</Button></Link>
+          <Button variant='primary' className="me-1" onClick={ removeBookFromReadBooksList }>Yes, Remove Book From My Read Books List</Button>
           <Button variant='primary' className="me-1" onClick={() => setShowModal(false)}>No, Do Not Change Book Status</Button>
         </div>
       </Modal.Body>
