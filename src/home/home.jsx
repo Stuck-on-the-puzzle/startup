@@ -86,14 +86,13 @@ export function Home() {
   };
 
   const friendSelection = async () => {
-    console.log('Friend Selection CLicked!')
     setFriendsToSelect([]); // Resets friend selection
     try {
       const response = await fetch(`/api/users`, {
         method: 'GET',
         credentials: 'include',
       });
-      if (!response.ok) throw new Error('Failed to Find Friends to Add');
+      if (!response.ok) throw new Error('Failed to Find Friends to Add'); //////// SOMETHING IS WRONG HERE. SHOULD NOT BE ABLE TO ADD YOURSELF AS A FRIEND
       const allUsers = await response.json();
       const selectableFriends = allUsers.filter(user => {
         return !friends.some(existingFriend => existingFriend.username === user.username);
