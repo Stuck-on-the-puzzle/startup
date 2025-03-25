@@ -63,8 +63,20 @@ async function removeWishBook(username, book) {
     );
 }
 
+// friend functions
+async function addFriend(username, friend) {
+    await userCollection.updateOne(
+        { username: username },
+        { $addToSet: { friends: friend } }
+    );
+}
 
-
+async function removeFriend(username, friend) {
+    await userCollection.updateOne(
+        { username: username },
+        { $pull: { friends: { username: friend.username } } }
+    );
+}
 
 module.exports = {
   getUser,
@@ -73,4 +85,8 @@ module.exports = {
   updateUser,
   updateReadBook,
   updateWishBook,
+  removeReadBook,
+  removeWishBook,
+  addFriend,
+  removeFriend,
 };

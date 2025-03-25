@@ -108,7 +108,7 @@ export function ReadBook() {
               <p>You Have No Friends...</p>
             ) : (
               friends.map((friend, index) => (
-                <div key={index} className="friendbubble" onClick={sendReccomendation}>{friend.name}</div>
+                <div key={index} className="friendbubble" onClick={sendReccomendation}>{friend.username}</div>
               ))
             )}
           </div>
