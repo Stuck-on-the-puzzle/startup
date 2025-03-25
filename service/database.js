@@ -78,6 +78,13 @@ async function removeFriend(username, friend) {
     );
 }
 
+async function addReview(username, review) {
+    await userCollection.updateOne(
+        { username: username },
+        { $addToSet: { reviews: review } }
+    );
+}
+
 module.exports = {
   getUser,
   getUserByToken,
@@ -89,4 +96,5 @@ module.exports = {
   removeWishBook,
   addFriend,
   removeFriend,
+  addReview,
 };
