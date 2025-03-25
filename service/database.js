@@ -17,6 +17,7 @@ const userCollection = db.collection('user');
     }
 })();
 
+// user functions
 function getUser(username) {
    return userCollection.findOne({ username: username })
 }
@@ -33,13 +34,37 @@ async function updateUser(user) {
   await userCollection.updateOne({ username: user.username }, { $set: user });
 }
 
+// book functions
 async function updateReadBook() {
-  return userCollection.insertOne();
+    await userCollection.updateOne(
+        { username: username },
+        { $addToSet: { readBooks: book } }
+    );
 }
 
-function updateWishBook() {
-  return userCollection.insertOne()
+async function updateWishBook() {
+    await userCollection.updateOne(
+        { username: username },
+        { $addToSet: { wishBooks: book } }
+    );
 }
+
+async function removeReadBook(username, book) {
+    await userCollection.updateOne(
+        { username: username },
+        { $pull: { readBook: { title: book.title } } }
+    );
+}
+
+async function removeWishBook(username, book) {
+    await userCollection.updateOne(
+        { username: username },
+        { $pull: { wishBook: { title: book.title } } }
+    );
+}
+
+
+
 
 module.exports = {
   getUser,
