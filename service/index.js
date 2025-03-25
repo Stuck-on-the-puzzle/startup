@@ -3,12 +3,13 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
+const DB = require('./database.js');
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 const authCookieName = 'authToken';
 
-// Memory Data Structures
-let users = [];
+// Memory Data Structures but now comes from mongo
+// let users = [];
 
 app.use(express.json());
 
@@ -36,6 +37,7 @@ apiRouter.post('/auth/login', async (req, res) => {
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuid.v4();
+      await DB.updateUser(user);
       setAuthCookie(res, user.token);
       res.send({ username: user.username });
       return;
@@ -44,11 +46,12 @@ apiRouter.post('/auth/login', async (req, res) => {
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-// DeleteAith logout a user
+// DeleteAuth logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     delete user.token;
+    DB.updateUser(user);
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
