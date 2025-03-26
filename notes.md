@@ -42,3 +42,7 @@ There is so much to learn and so much you can do with reactivity. I found just l
 ## Web Service
 
 There is a lot going on when it comes to webservice and it was overwhelming at first.
+
+## Mongo DB
+
+This was way easier to implement than I thought. I had my code set up nicely so there were only a few lines that needed to change after adding my database files and making sure I installed everything and made my mongo account.
