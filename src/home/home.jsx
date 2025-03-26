@@ -7,7 +7,6 @@ import Modal from 'react-bootstrap/Modal';
 const recommendationPlaceHolder = (displayRecommendation, friends) => {
   setInterval(() => {
     const randomFriend = friends[Math.floor(Math.random() * friends.length)];
-    console.log(randomFriend)
     if (randomFriend.readBooks.length > 0) {
       const randomBook = randomFriend.readBooks[Math.floor(Math.random() * randomFriend.readBooks.length)];
       displayRecommendation({booktitle: randomBook.bookTitle, from: randomFriend.username });
@@ -92,12 +91,11 @@ export function Home() {
         method: 'GET',
         credentials: 'include',
       });
-      if (!response.ok) throw new Error('Failed to Find Friends to Add'); //////// SOMETHING IS WRONG HERE. SHOULD NOT BE ABLE TO ADD YOURSELF AS A FRIEND
+      if (!response.ok) throw new Error('Failed to Find Friends to Add');
       const allUsers = await response.json();
       const selectableFriends = allUsers.filter(user => {
         return !friends.some(existingFriend => existingFriend.username === user.username);
       });
-
       setFriendsToSelect(selectableFriends);
       setShowFriendModal(true);
     } catch (error) {

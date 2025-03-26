@@ -31,7 +31,6 @@ export function ReadBook() {
           (review) => review.bookTitle === bookTitle
         );
         setReview(currentReview ? currentReview.review : '');
-        console.log(currentReview.review)
       } catch (err) {
         console.error('Error fetching user data:', err);
       }
@@ -57,7 +56,6 @@ export function ReadBook() {
           (review) => review.username === userName && review.bookTitle === bookTitle
         )
         setReview(updatedReview ? updatedReview.review : '');
-        console.log("Review Submitted!");
         navigate('/home');
       } else {
       const errorData = await response.json();
@@ -72,8 +70,8 @@ export function ReadBook() {
     setShowModal(true);
   };
 
-  const sendReccomendation = () => { /////////////////////// WILL NEED TO IMPLEMENT THIS!
-    console.log(`Sending recommendation to ${friends.username}`);
+  const sendReccomendation = (friend) => {!
+    console.log(`Sending recommendation to ${friend.username}`);
     //PLACEHOLDER FOR SENDING RECCOMENDATIONS
   }
 
@@ -87,7 +85,6 @@ export function ReadBook() {
       });
 
       if (response.ok) {
-        console.log("Book removed from readBooks");
         navigate('/home');
       } else {
         const errorData = await response.json();
@@ -130,7 +127,7 @@ export function ReadBook() {
               <p>You Have No Friends...</p>
             ) : (
               friends.map((friend, index) => (
-                <div key={index} className="friendbubble" onClick={sendReccomendation}>{friend.username}</div>
+                <div key={index} className="friendbubble" onClick={sendReccomendation(friend)}>{friend.username}</div>
               ))
             )}
           </div>

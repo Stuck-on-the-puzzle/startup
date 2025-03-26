@@ -204,7 +204,7 @@ apiRouter.get('/users', verifyAuth, async (req, res) => {
   const user = await DB.getUserByToken(req.cookies[authCookieName]);
   if (user) {
     const allUsers = await DB.getAllUsers();
-    const filteredUsers = allUsers.filter(u => u.useranme !== user.username);
+    const filteredUsers = allUsers.filter(u => u.username !== user.username);
     res.send(filteredUsers);
     return
   }
