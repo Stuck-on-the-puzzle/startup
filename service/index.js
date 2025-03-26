@@ -73,7 +73,7 @@ apiRouter.get('/user/profile', verifyAuth, async (req, res) => {
   if (user) {
     const friendsWithReadBooks = await Promise.all(user.friends.map(async (friend) => {
       const friendUser = await DB.getUser(friend.username);
-      const friendBooksWithReviews = friendUser.readBooks.map((book) => { // this is throwing errors there is some issue with the readBooks portion of frienduser I think I fixed it but test it out by seeing if friends who have read this book and their review pop up
+      const friendBooksWithReviews = friendUser.readBooks.map((book) => {
         const review = friendUser.reviews.find((r) => r.bookTitle === book.title);
         return {
           friend: friendUser,
