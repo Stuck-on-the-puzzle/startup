@@ -30,7 +30,12 @@ function peerProxy(httpServer) {
         }
       });
 
-      // create scenario when client is not online
+      if (!Array.from(socketServer.clients).some((client) => client.userID === recipientID && client.readyState === WebSocketServer.OPEN)) {
+        if (!messageStorage[recipientID]) {
+            messageStorage[recipientID] = [];
+        }
+        messageStorage[recipientID.push(JSON.stringify({ senderID: socket.userID, message }))]
+      }
     });
 
     // Respond to pong messages by marking the connection alive
