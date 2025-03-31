@@ -49,7 +49,9 @@ export function Home() {
         console.error('Error fetching user data:', err);
       }
     };
-
+    let port = window.location.port;
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    
     fetchUserData();
   }, []);
 
