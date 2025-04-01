@@ -51,12 +51,20 @@ export function Home() {
         console.error('Error fetching user data:', err);
       }
     };
+
+    fetchUserData();
+    
+    if (!userName) return;
+
     let port = window.location.port;
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}`);
     socket.onopen = () => {
       console.log('WebSocket connected');
       socket.send(JSON.stringify({ type: 'register', userID: userName }));
+    };
+    socket.onerror = (error) => {
+      console.error('WebSocket Error:', error);
     };
     socket.onmessage = async (msg) => {
       const data = JSON.parse(msg.data);
@@ -64,8 +72,6 @@ export function Home() {
         displayRecommendation({ from: data.senderID, bookTitle: data.bookTitle });
       }
     };
-
-    fetchUserData();
 
     return () => {
       socket.close()

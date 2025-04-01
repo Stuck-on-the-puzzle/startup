@@ -1,11 +1,13 @@
 const { WebSocketServer } = require('ws');
 const recommendStorage = {}
 
+//////////// go through line by line and see what each piece of code is doing
 function peerProxy(httpServer) {
   // Create a websocket object
   const socketServer = new WebSocketServer({ server: httpServer });
 
   socketServer.on('connection', (socket) => {
+    console.log('WebSocket Connection Established')
     socket.isAlive = true;
     socket.userID = null;
 
@@ -34,7 +36,7 @@ function peerProxy(httpServer) {
         if (!recommendStorage[recipientID]) {
             recommendStorage[recipientID] = [];
         }
-        recommendStorage[recipientID.push(JSON.stringify({ senderID: socket.userID, bookTitle }))]
+        recommendStorage[recipientID].push(JSON.stringify({ senderID: socket.userID, bookTitle }))
       }
     });
 

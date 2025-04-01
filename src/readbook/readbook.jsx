@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,6 +13,9 @@ export function ReadBook() {
   const [userName, setUserName] = React.useState('');
   const [showModal, setShowModal] = React.useState(false);
   const [friends, setFriends] = React.useState([]); 
+  const [isSocketOpen, setIsSocketOpen] = React.useState(false);
+
+  const socketRef = useRef(null);
 
   React.useEffect(() => {
     const fetchUserData = async () => {
@@ -36,15 +39,28 @@ export function ReadBook() {
       }
     };
 
+    fetchUserData();
+
+    if (!userName) return;
+    
     let port = window.location.port;
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}`);
+    socketRef.current = socket;
     socket.onopen = () => {
       console.log('WebSocket connected');
+      setIsSocketOpen(true);
       socket.send(JSON.stringify({ type: 'register', userID: userName }));
     };
 
-    fetchUserData();
+    socket.onerror = (error) => {
+      console.error('WebSocket Error: ', error);
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+      setIsSocketOpen(false);
+    };
 
     return () => {
       socket.close()
@@ -82,8 +98,12 @@ export function ReadBook() {
     setShowModal(true);
   };
 
-  const sendRecomendation = (friend) => {!
-    socket.send(JSON.stringify({ friend, bookTitle }));
+  const sendRecomendation = (friend) => {
+    if (isSocketOpen && socketRef.current) {
+      socketRef.current.send(JSON.stringify({ recipientID: friend.username, bookTitle: bookTitle }));
+    } else {
+      console.error("WebSocket is not open")
+    }
   }
 
   const removeBookFromReadBooksList = async () => {
@@ -138,7 +158,7 @@ export function ReadBook() {
               <p>You Have No Friends...</p>
             ) : (
               friends.map((friend, index) => (
-                <div key={index} className="friendbubble" onClick={sendRecomendation(friend)}>{friend.username}</div>
+                <div key={index} className="friendbubble" onClick={() => sendRecomendation(friend)}>{friend.username}</div>
               ))
             )}
           </div>
