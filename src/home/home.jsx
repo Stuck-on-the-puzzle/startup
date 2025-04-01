@@ -4,15 +4,16 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-const recommendationPlaceHolder = (displayRecommendation, friends) => {
-  setInterval(() => {
-    const randomFriend = friends[Math.floor(Math.random() * friends.length)];
-    if (randomFriend.readBooks.length > 0) {
-      const randomBook = randomFriend.readBooks[Math.floor(Math.random() * randomFriend.readBooks.length)];
-      displayRecommendation({booktitle: randomBook.bookTitle, from: randomFriend.username });
-    }
-  }, 7000);
-};
+// comment our placeholder because websocket is implemented
+// const recommendationPlaceHolder = (displayRecommendation, friends) => {
+//   setInterval(() => {
+//     const randomFriend = friends[Math.floor(Math.random() * friends.length)];
+//     if (randomFriend.readBooks.length > 0) {
+//       const randomBook = randomFriend.readBooks[Math.floor(Math.random() * randomFriend.readBooks.length)];
+//       displayRecommendation({booktitle: randomBook.bookTitle, from: randomFriend.username });
+//     }
+//   }, 7000);
+// };
 
 export function Home() {
   const [userName, setUserName] = React.useState('');
@@ -44,15 +45,31 @@ export function Home() {
         setWishBooks(data.wishBooks || []);
         setFriends(data.friends || []);
         console.log(data)
-        recommendationPlaceHolder(displayRecommendation, data.friends);
+        // commented out placeholder because websocket is implemented
+        // recommendationPlaceHolder(displayRecommendation, data.friends);
       } catch (err) {
         console.error('Error fetching user data:', err);
       }
     };
     let port = window.location.port;
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    
+    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    socket.onopen = () => {
+      console.log('WebSocket connected');
+      socket.send(JSON.stringify({ tpye: 'register', userID: userName }));
+    };
+    socket.onmessage = async (msg) => {
+      const data = JSON.parse(msg.data);
+      if (data.senderID && data.bookTitle) {
+        displayRecommendation({ from: data.senderID, bookTitle: data.bookTitle });
+      }
+    };
+
     fetchUserData();
+
+    return () => {
+      socket.close()
+    };
   }, []);
 
   const searching = (event) => {
