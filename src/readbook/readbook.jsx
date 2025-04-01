@@ -35,8 +35,20 @@ export function ReadBook() {
         console.error('Error fetching user data:', err);
       }
     };
-  
+
+    let port = window.location.port;
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    socket.onopen = () => {
+      console.log('WebSocket connected');
+      socket.send(JSON.stringify({ type: 'register', userID: userName }));
+    };
+
     fetchUserData();
+
+    return () => {
+      socket.close()
+    };
   }, []); 
 
   const submitReview = async () => {
@@ -70,9 +82,8 @@ export function ReadBook() {
     setShowModal(true);
   };
 
-  const sendReccomendation = (friend) => {!
-    console.log(`Sending recommendation to ${friend.username}`);
-    //PLACEHOLDER FOR SENDING RECCOMENDATIONS
+  const sendRecomendation = (friend) => {!
+    socket.send(JSON.stringify({ friend, bookTitle }));
   }
 
   const removeBookFromReadBooksList = async () => {
@@ -127,7 +138,7 @@ export function ReadBook() {
               <p>You Have No Friends...</p>
             ) : (
               friends.map((friend, index) => (
-                <div key={index} className="friendbubble" onClick={sendReccomendation(friend)}>{friend.username}</div>
+                <div key={index} className="friendbubble" onClick={sendRecomendation(friend)}>{friend.username}</div>
               ))
             )}
           </div>

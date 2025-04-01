@@ -56,7 +56,7 @@ export function Home() {
     const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
     socket.onopen = () => {
       console.log('WebSocket connected');
-      socket.send(JSON.stringify({ tpye: 'register', userID: userName }));
+      socket.send(JSON.stringify({ type: 'register', userID: userName }));
     };
     socket.onmessage = async (msg) => {
       const data = JSON.parse(msg.data);
