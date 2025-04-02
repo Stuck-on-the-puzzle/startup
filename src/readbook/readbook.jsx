@@ -14,6 +14,7 @@ export function ReadBook() {
   const [showModal, setShowModal] = React.useState(false);
   const [friends, setFriends] = React.useState([]); 
   const [isSocketOpen, setIsSocketOpen] = React.useState(false);
+  const [notification, setNotification] = useState('');
 
   const socketRef = useRef(null);
 
@@ -65,7 +66,7 @@ export function ReadBook() {
     return () => {
       socket.close()
     };
-  }, [userName]); 
+  }, [userName]);
 
   const submitReview = async () => {
     const newReview = { username: userName, bookTitle: bookTitle, review: bookReview };
@@ -100,7 +101,9 @@ export function ReadBook() {
 
   const sendRecommendation = (friend) => {
     if (isSocketOpen && socketRef.current) {
+      console.log('Recommendation Sent!')
       socketRef.current.send(JSON.stringify({ type: 'message', recipientID: friend.username, bookTitle: bookTitle }));
+      setNotification('Recommendation Sent!');
     } else {
       console.error("WebSocket is not open")
     }
@@ -126,6 +129,15 @@ export function ReadBook() {
     }
     setShowModal(false);
   };
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification('');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  })
 
   return (
     <div>
@@ -163,6 +175,9 @@ export function ReadBook() {
             )}
           </div>
         </section>
+
+        {notification && (<div className="notification">{notification}</div>)}
+        
     </main>
 
     <Modal show={showModal} onHide={() => setShowModal(false)}>
