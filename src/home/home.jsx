@@ -58,7 +58,7 @@ export function Home() {
 
     let port = window.location.port;
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}`);
+    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
     socket.onopen = () => {
       console.log('WebSocket connected');
       socket.send(JSON.stringify({ type: 'register', userID: userName }));
@@ -67,6 +67,7 @@ export function Home() {
       console.error('WebSocket Error:', error);
     };
     socket.onmessage = async (msg) => {
+      console.log('Incoming Recommendation');
       const data = JSON.parse(msg.data);
       if (data.senderID && data.bookTitle) {
         displayRecommendation({ from: data.senderID, bookTitle: data.bookTitle });
@@ -76,7 +77,7 @@ export function Home() {
     return () => {
       socket.close()
     };
-  }, []);
+  }, [userName]);
 
   const searching = (event) => {
     setSearchTerm(event.target.value);

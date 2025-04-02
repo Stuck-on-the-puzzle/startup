@@ -45,7 +45,7 @@ export function ReadBook() {
     
     let port = window.location.port;
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}`);
+    const socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
     socketRef.current = socket;
     socket.onopen = () => {
       console.log('WebSocket connected');
@@ -65,7 +65,7 @@ export function ReadBook() {
     return () => {
       socket.close()
     };
-  }, []); 
+  }, [userName]); 
 
   const submitReview = async () => {
     const newReview = { username: userName, bookTitle: bookTitle, review: bookReview };
@@ -98,9 +98,9 @@ export function ReadBook() {
     setShowModal(true);
   };
 
-  const sendRecomendation = (friend) => {
+  const sendRecommendation = (friend) => {
     if (isSocketOpen && socketRef.current) {
-      socketRef.current.send(JSON.stringify({ recipientID: friend.username, bookTitle: bookTitle }));
+      socketRef.current.send(JSON.stringify({ type: 'message', recipientID: friend.username, bookTitle: bookTitle }));
     } else {
       console.error("WebSocket is not open")
     }
@@ -158,7 +158,7 @@ export function ReadBook() {
               <p>You Have No Friends...</p>
             ) : (
               friends.map((friend, index) => (
-                <div key={index} className="friendbubble" onClick={() => sendRecomendation(friend)}>{friend.username}</div>
+                <div key={index} className="friendbubble" onClick={() => sendRecommendation(friend)}>{friend.username}</div>
               ))
             )}
           </div>
