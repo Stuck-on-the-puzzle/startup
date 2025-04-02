@@ -43,7 +43,7 @@ function bookRecommend(httpServer) {
 
         socketServer.clients.forEach((client) => {
           if (client.userID === recipientID && client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify({ senderID: socket.userID, bookTitle }));
+              client.send(JSON.stringify({ senderID: socket.userID, bookTitle: bookTitle }));
           }
         });
 

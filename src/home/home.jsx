@@ -177,7 +177,8 @@ export function Home() {
   };
 
   const displayRecommendation = (recommendation) => {
-    setRecommendedBook(`${recommendation.from} recommends ${recommendation.booktitle}`)
+    console.log(recommendation);
+    setRecommendedBook(`${recommendation.from} recommends ${recommendation.bookTitle}`)
   };
 
   const clearBooks = async () => {
@@ -211,6 +212,7 @@ export function Home() {
         {recommendedBook && (
           <div className="recommendation-container">
             <p>{recommendedBook}</p>
+            <Button className="me-1" onClick={() => setRecommendedBook('')} >Okay!</Button>
           </div>
         )}
 
