@@ -1,7 +1,6 @@
 const { WebSocketServer } = require('ws');
 const recommendStorage = {}
 
-//////////// go through line by line and see what each piece of code is doing
 function bookRecommend(httpServer) {
   // Create a websocket object
   const socketServer = new WebSocketServer({ server: httpServer });
@@ -12,30 +11,48 @@ function bookRecommend(httpServer) {
 
     socket.on('register', (userID) => {
         socket.userID = userID;
+        console.log('registered')
         if (recommendStorage[userID]) {
-            recommendStorage[userID].forEach((recommendation) => {
-                socket.send(recommendation);
-            });
-            delete recommendStorage[userID];
+          recommendStorage[userID].forEach((recommendation) => {
+            try {
+              const parsedRecommendation = JSON.parse(recommendation);
+              socket.send(JSON.stringify(parsedRecommendation));
+            } catch (error) {
+              console.error("Invalid recommendation", error)
+            }
+          });
+          delete recommendStorage[userID];
+
         }
     });
 
     // Forward messages to intended user
     socket.on('message', function message(data) {
       const parsedData = JSON.parse(data);
-      const { recipientID, bookTitle } = parsedData; //// need to make sure the data is in this form when sent in the front end code!!!!!!
-
-      socketServer.clients.forEach((client) => {
-        if (client.userID === recipientID && client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ senderID: socket.userID, bookTitle }));
+      if (parsedData.type === 'register') {
+        socket.userID = parsedData.userID;
+        console.log('registered')
+        if (recommendStorage[socket.userID]) {
+          recommendStorage[socket.userID].forEach((recommendation) => {
+            socket.send(recommendation);
+          });
+          delete recommendStorage[socket.userID];
         }
-      });
+      } else {
+        const { recipientID, bookTitle } = parsedData;
 
-      if (!Array.from(socketServer.clients).some((client) => client.userID === recipientID && client.readyState === WebSocketServer.OPEN)) {
-        if (!recommendStorage[recipientID]) {
-            recommendStorage[recipientID] = [];
+        socketServer.clients.forEach((client) => {
+          if (client.userID === recipientID && client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify({ senderID: socket.userID, bookTitle }));
+          }
+        });
+
+        if (!Array.from(socketServer.clients).some((client) => client.userID === recipientID && client.readyState === WebSocketServer.OPEN)) {
+          if (!recommendStorage[recipientID]) {
+              recommendStorage[recipientID] = [];
+          }
+          recommendStorage[recipientID].push(JSON.stringify({ senderID: socket.userID, bookTitle }))
         }
-        recommendStorage[recipientID].push(JSON.stringify({ senderID: socket.userID, bookTitle }))
       }
     });
 
