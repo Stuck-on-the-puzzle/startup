@@ -70,7 +70,9 @@ export function Home() {
       console.log('Incoming Recommendation');
       const data = JSON.parse(msg.data);
       if (data.senderID && data.bookTitle) {
-        displayRecommendation({ from: data.senderID, bookTitle: data.bookTitle });
+        setRecommendedBook((prevRecommendations) => [
+          ...prevRecommendations,{ from: data.senderID, bookTitle: data.bookTitle }
+        ]);
       }
     };
 
@@ -200,6 +202,11 @@ export function Home() {
     }
   };
 
+  const closeRecommendation = (index) => {
+    setRecommendedBook((prevRecommendations) =>
+    prevRecommendations.filter((_, i) => i !== index));
+  };
+
   return (
     <form id="homeform">
     <main>
@@ -209,10 +216,14 @@ export function Home() {
             <p className="info">{userName}</p>
         </section>
 
-        {recommendedBook && (
+        {recommendedBook.length > 0 && (
           <div className="recommendation-container">
-            <p>{recommendedBook}</p>
-            <Button className="me-1" onClick={() => setRecommendedBook('')} >Okay!</Button>
+            {recommendedBook.map((recommendation, index) => (
+              <div key={index} className="recommendation-item">
+                <p>{recommendation.from} recommends {recommendation.bookTitle}</p>
+                <Button className="me-1" onClick={() => closeRecommendation(index)} >Okay!</Button>
+              </div>
+            ))}
           </div>
         )}
 
