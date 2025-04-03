@@ -46,3 +46,7 @@ There is a lot going on when it comes to webservice and it was overwhelming at f
 ## Mongo DB
 
 This was way easier to implement than I thought. I had my code set up nicely so there were only a few lines that needed to change after adding my database files and making sure I installed everything and made my mongo account.
+
+## WebSocket
+
+WebSocket is really cool! It took me a while to feel like I got a hang of things, but I learned that you need to makes sure that if you are using WebSocket and it need to wait for user identification, you need to make sure it waits for the userID to be used.
